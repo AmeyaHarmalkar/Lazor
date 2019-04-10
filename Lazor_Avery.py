@@ -15,15 +15,35 @@ def data(filename):
 	grid_stop = raw_data.index('GRID STOP')
 
 	grid_raw = raw_data[grid_start+1:grid_stop]
-	grid = []
+	setup = raw_data[grid_stop+1:]
+	
+	grid, laser, point = [], [], []
+	blocks = setup[:]
+
 	for g in grid_raw:
 		x = ''.join(g.split())
 		grid.append(x)
-	setup[:] = (line for line in setup if line != '')
 
-	return grid
+	for line in setup:
+		if 'L' in line:
+			laser.append(line)
+			blocks.remove(line)
+			continue
+		elif 'P' in line:
+			point.append(line)
+			blocks.remove(line)
+
+
+	# block = []
+	# for x in setup[:3]:
+	# 	if x[0] == 'A':
+	# 		A = int(x[2])
+	# 	elif x[0] == 'B':
+	# 		B = int(x[2])
+	# 	elif x[0] == 'C':
+	# 		C = int(x[2])
+	return grid, blocks, laser, point
 
 if __name__ == "__main__":
-	grid = data('mad_1.bff')
-	print(grid)
-	# print(line, grid, '\n', setup, sep = '')
+	grid, blocks, laser, point = data('mad_1.bff')
+	print(grid, blocks, laser, point, sep='\n')
