@@ -41,30 +41,24 @@ def data(filename):
 		elif 'P' in line:
 			point_raw.append(line)
 			blocks.remove(line)
-
-	return grid, blocks, laser_raw, point_raw
-
-def laser_prop(laser_raw):
-	'''
-	This function returns laser properties as a list of integers.
-	'''
 	
-	# laser_x, laser_y, laser_vx, laser_vy = [], [], [], []
-	laser_trim = []
+	# Convert laser_raw and point_raw into lists of integers
+	laser, point = [], []
+
 	for source in laser_raw:
 		for i in range(2, len(source)):
 			if source[i] != ' ' and source[i] != '-':
 				if source[i-1] == '-':
 					value = int(source[i-1] + source[i])
-					laser_trim.append(value)
+					laser.append(value)
 				else:
-					laser_trim.append(int(source[i])) 
-	return laser_trim
-			# laser_x.append(source[2])
-			# laser_y.append(source[4])
-			# laser_vx.append(source[6])
-			# laser_vy.append(source[8])
-	# return laser_x, laser_y, laser_vx, laser_vy
+					laser.append(int(source[i])) 
+	for p in point_raw:
+		for i in p:
+			if i != 'P' and i != ' ':
+				point.append(int(i))
+
+	return grid, blocks, laser, point
 
 class Blocks:
 	def __init__(self, amount):
@@ -73,8 +67,10 @@ class Blocks:
 		pass
 
 if __name__ == "__main__":
-	grid, blocks, laser, point = data('dark_1.bff')
-	laser_prop = laser_prop(laser)
+	grid, blocks, laser, point = data('mad_1.bff')
 	# laser_x, laser_y, laser_vx, laser_vy = laser_prop(laser)
-	print(grid, blocks, laser, point, laser_prop, sep='\n')
+	print('Grid =', grid)
+	print('Blocks =', blocks)
+	print('Laser sets =', laser)
+	print('Point sets =', point)
 	# print(laser_x, laser_y, laser_vx, laser_vy, sep='\n')
