@@ -4,7 +4,7 @@
 
 def data(filename):
 	'''
-
+	This function extracts raw data from .bff input file
 	'''
 
 	# Extract raw data from .bff file
@@ -26,7 +26,7 @@ def data(filename):
 	setup = raw_data[grid_stop+1:]
 	
 	# Extract from raw data information on grid, blocks, laser and points:
-	grid, laser, point = [], [], []
+	grid, laser_raw, point_raw = [], [], []
 	blocks = setup[:]
 
 	for g in grid_raw:
@@ -35,15 +35,46 @@ def data(filename):
 
 	for line in setup:
 		if 'L' in line:
-			laser.append(line)
+			laser_raw.append(line)
 			blocks.remove(line)
 			continue
 		elif 'P' in line:
-			point.append(line)
+			point_raw.append(line)
 			blocks.remove(line)
 
-	return raw_data, grid, blocks, laser, point
+	return grid, blocks, laser_raw, point_raw
+
+def laser_prop(laser_raw):
+	'''
+	This function returns laser properties as a list of integers.
+	'''
+	
+	# laser_x, laser_y, laser_vx, laser_vy = [], [], [], []
+	laser_trim = []
+	for source in laser_raw:
+		for i in range(2, len(source)):
+			if source[i] != ' ' and source[i] != '-':
+				if source[i-1] == '-':
+					value = int(source[i-1] + source[i])
+					laser_trim.append(value)
+				else:
+					laser_trim.append(int(source[i])) 
+	return laser_trim
+			# laser_x.append(source[2])
+			# laser_y.append(source[4])
+			# laser_vx.append(source[6])
+			# laser_vy.append(source[8])
+	# return laser_x, laser_y, laser_vx, laser_vy
+
+class Blocks:
+	def __init__(self, amount):
+		self.amount = amount
+	def info(self):
+		pass
 
 if __name__ == "__main__":
-	raw, grid, blocks, laser, point = data('mad_1.bff')
-	print(raw, grid, blocks, laser, point, sep='\n')
+	grid, blocks, laser, point = data('dark_1.bff')
+	laser_prop = laser_prop(laser)
+	# laser_x, laser_y, laser_vx, laser_vy = laser_prop(laser)
+	print(grid, blocks, laser, point, laser_prop, sep='\n')
+	# print(laser_x, laser_y, laser_vx, laser_vy, sep='\n')
