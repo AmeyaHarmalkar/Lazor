@@ -32,7 +32,7 @@ class Refract:
 
 ## Just a check!
 
-O1 = Opaque(2,4)
-print(O1.x)
-print(O1.y)
+O2 = Opaque(2,4)
+print(O2.x)
+print(O2.y)
 
