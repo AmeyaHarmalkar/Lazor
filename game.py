@@ -27,20 +27,20 @@ class Game :
 
 		grid_raw = raw_data[grid_start+1:grid_stop]
 
-		grid = []
+		self.grid = []
 
 		for i in grid_raw:
 			trial_list = []
 			x = ''.join(i.split())
 			for letter in x:
 				trial_list.append(letter)
-			grid.append(trial_list)
+			self.grid.append(trial_list)
 
 
 		## Generating the Laser direction tuple 
 
-		lazor_start=[]
-		lazor_path=[]
+		self.lazor_start=[]
+		self.lazor_path=[]
 
 		for line in raw_data:
 			lazor_direction=[]
@@ -49,10 +49,10 @@ class Game :
 				if len(line) == 4 :
 					for i in range(len(line)):
 						if i < 2 :
-							lazor_start.append(int(line[i]))
+							self.lazor_start.append(int(line[i]))
 						else :
 							lazor_direction.append(int(line[i]))
-					lazor_path.append(tuple(lazor_direction))
+					self.lazor_path.append(tuple(lazor_direction))
 		
 				else :
 					print("Does not match the expected format. Input error. Core Dump")
@@ -60,7 +60,7 @@ class Game :
 
 		## Generating the list of points through which the laser should pass
 
-		pointer = []
+		self.pointer = []
 
 		for line in raw_data:
 			point_set = []
@@ -69,33 +69,30 @@ class Game :
 				if len(line) == 2:
 					for i in range(len(line)):
 						point_set.append(int(line[i]))
-					pointer.append(tuple(point_set))
+					self.pointer.append(tuple(point_set))
 				else :
 					print("Does not match the expected format. Input error. Core Dump")
 
 
 		## Generating the dictionary describing the blocks
 
-		blocks = {}
+		self.blocks = {}
 
 		for line in raw_data:
 			if line.startswith('A') == True or line.startswith('B') == True or line.startswith('C') == True:
 				line = line.split()
 				key = line[0]
-				blocks[key] = int(line[1])
+				self.blocks[key] = int(line[1])
 
-		return grid, lazor_start, lazor_path, pointer, blocks
 
 
 
 if __name__ == "__main__":
 	G = Game('mad_1.bff')
-	grid_net, lazer_ini, lazer_pathway, points, blcks = G.database()
+	G.database()
 
-	print('Grid =', grid_net)
-	print('Blocks =', blcks)
-	print('Laser sets =', lazer_pathway)
-	print('Lazer initial =', lazer_ini)
-	print('Point sets =', points)
-
-#G2 = Game('mad_1.bff')
+	print('Grid =', G.grid)
+	print('Blocks =', G.blocks)
+	print('Laser sets =', G.lazor_path)
+	print('Lazer initial =', G.lazor_start)
+	print('Point sets =', G.pointer)
