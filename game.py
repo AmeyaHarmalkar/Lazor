@@ -106,7 +106,11 @@ class Game :
 		This function is to generate all the possible combinations of boards that can be parsed through with the 
 		available blocks. 
 		'''
-
+		# Populating the board with original block setup
+		self.boards = [['' for i in range(len(self.grid[0]) * 2 + 1)] for j in range(len(self.grid * 2) + 1)]
+		for i in range(len(self.grid)):
+			for j in range(len(self.grid[i])):
+				self.boards[i * 2 + 1][j * 2 + 1] = self.grid[i][j]
 
 
 
@@ -114,8 +118,10 @@ class Game :
 if __name__ == "__main__":
 	G = Game('yarn_5.bff')
 	G.database()
-
+	G.generate_boards()
+	
 	print('Grid =', G.grid)
+	print('Board =', G.boards)
 	print('Blocks =', G.blocks)
 	print('Laser path =', G.lazor_path)
 	print('Lazer initial =', G.lazor_start)
