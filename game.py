@@ -1,10 +1,23 @@
 
 class Game :
 	'''
+	This is the game grid. We have made this section to read user input, format and output it as per our
+	requirements, to determine all the possible different combinations of boards we can make and run 
+	a program through all of them to try and find a winning program!
 	'''
 
 	def __init__(self, filename):
+		'''
+		This is just an initialization function to enter the file into the system.
+
+		**Parameters**
+
+			filename : *str* 
+				The name of the input file
+
+		'''
 		self.fptr = open(filename, 'r').read()
+
 
 	def database(self):
 		all_lines = self.fptr.split('\n')
@@ -35,6 +48,10 @@ class Game :
 			for letter in x:
 				trial_list.append(letter)
 			self.grid.append(trial_list)
+
+		for line in grid_raw:
+			if line in raw_data:
+				raw_data.remove(line)
 
 
 		## Generating the Laser direction tuple 
@@ -84,15 +101,22 @@ class Game :
 				key = line[0]
 				self.blocks[key] = int(line[1])
 
+	def generate_boards(self):
+		'''
+		This function is to generate all the possible combinations of boards that can be parsed through with the 
+		available blocks. 
+		'''
+
+
 
 
 
 if __name__ == "__main__":
-	G = Game('mad_1.bff')
+	G = Game('yarn_5.bff')
 	G.database()
 
 	print('Grid =', G.grid)
 	print('Blocks =', G.blocks)
-	print('Laser sets =', G.lazor_path)
+	print('Laser path =', G.lazor_path)
 	print('Lazer initial =', G.lazor_start)
 	print('Point sets =', G.pointer)
