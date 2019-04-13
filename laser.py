@@ -74,7 +74,7 @@ class Laser:
 
 		#meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
 		meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 'A', 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+		[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 'C', 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
 		[0, 0, 0, 'A', 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 		intercepts = [tuple(self.source)]
 
@@ -105,51 +105,62 @@ class Laser:
 
 			# Exploring the neighbours of the new point to modify directions
 
-			for i in range(len(n_direct)):
-				ex = nx + n_direct[i][0]
-				ey = ny + n_direct[i][1]
+			if (dx,dy) != (0,0):
 
-				if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
-					#Just to perform a check that we are still within the grid
-					delta_x = ex-nx
-					delta_y = ey-ny
+			#This will allow the loop to proceed only if there is a viable direction to proceed	
 
-					print("X",ex,nx,delta_x)
-					print("Y",ey,ny,delta_y)
+				for i in range(len(n_direct)):
+					ex = nx + n_direct[i][0]
+					ey = ny + n_direct[i][1]
+
+					if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
+						#Just to perform a check that we are still within the grid
+						delta_x = ex-nx
+						delta_y = ey-ny
+
+						if meshgrid[ex][ey] == 'A':
+							if delta_x == 0:
+								new_dx = dx * 1
+							else:
+								new_dx = dx * -1
+							if delta_y == 0:
+								new_dy = dy * 1
+							else:
+								new_dy = dy * -1
+							nlist.append((new_dx,new_dy))
+							print("X",ex,nx,delta_x)
+							print("Y",ey,ny,delta_y)
+
+						elif meshgrid[ex][ey] == 'B':
+							new_dx = dx * 0
+							new_dy = dy * 0
+							nlist.append((new_dx,new_dy))
 
 
-					if meshgrid[ex][ey] == 'A':
-						if delta_x == 0:
-							new_dx = dx * 1
-						else:
-							new_dx = dx * -1
-						if delta_y == 0:
-							new_dy = dy * 1
-						else:
-							new_dy = dy * -1
-						path.append((new_dx,new_dy))
+						elif meshgrid[ex][ey] == 'C':
+							if delta_x == 0:
+								new_dx = dx * 1
+							else:
+								new_dx = dx * -1
+							if delta_y == 0:
+								new_dy = dy * 1
+							else:
+								new_dy = dy * -1
+							nlist.append((new_dx,new_dy))
+							print("X",ex,nx,delta_x)
+							print("Y",ey,ny,delta_y)
 
-					elif meshgrid[ex][ey] == 'B':
-						new_dx = dx * 0
-						new_dy = dy * 0
-						path.append((new_dx,new_dy))
+					
+				if len(nlist) > 0:
+					path.append(nlist[-1])
+					print(nlist)
 
+				else :
+					path.append((dx,dy))
 
-					elif meshgrid[ex][ey] == 'C':
-						if delta_x == 0:
-							new_dx = dx * 1
-						else:
-							new_dx = dx * -1
-						if delta_y == 0:
-							new_dy = dy * 1
-						else:
-							new_dy = dy * -1
-						path.append((new_dx,new_dy))
-
-					else:
-						path.append((dx,dy))
-
-			print(path[-1])
+				#print(path[-1])
+			else :
+				break
 
 		return intercepts, path
 
