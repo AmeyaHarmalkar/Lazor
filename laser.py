@@ -72,10 +72,12 @@ class Laser:
 
 	def trajectory(self,path, grid):
 
-		#meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
-		meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
-		[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 'C', 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
-		[0, 0, 0, 'A', 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+		meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
+
+		#This is the test meshgrid
+		#meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+		#[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 'C', 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+		#[0, 0, 0, 'A', 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 		intercepts = [tuple(self.source)]
 
 		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
@@ -181,5 +183,5 @@ A = Laser(lazor_start,lazor_path)
 intcp, pth = A.trajectory(lazor_path,grid)
 
 print(intcp)
-#print(pth)
+print(pth)
 
