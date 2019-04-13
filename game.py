@@ -60,15 +60,17 @@ class Game :
 		self.lazor_path=[]
 
 		for line in raw_data:
-			lazor_direction=[]
+			lazor_direction = []
+			lazor_origin = []
 			if 'L' in line:
 				line = line.lstrip("L").split()
 				if len(line) == 4 :
 					for i in range(len(line)):
 						if i < 2 :
-							self.lazor_start.append(int(line[i]))
+							lazor_origin.append(int(line[i]))
 						else :
 							lazor_direction.append(int(line[i]))
+					self.lazor_start.append(tuple(lazor_origin))
 					self.lazor_path.append(tuple(lazor_direction))
 		
 				else :
@@ -106,23 +108,51 @@ class Game :
 		This function is to generate all the possible combinations of boards that can be parsed through with the 
 		available blocks. 
 		'''
-		# Populating the board with original block setup
-		self.boards = [['' for i in range(len(self.grid[0]) * 2 + 1)] for j in range(len(self.grid * 2) + 1)]
-		for i in range(len(self.grid)):
-			for j in range(len(self.grid[i])):
-				self.boards[i * 2 + 1][j * 2 + 1] = self.grid[i][j]
 
 
+class Board:
+	'''
+	The class to generate the baord game and all its various possibilities
+	'''
+	
+	def __init__(self,grid,origin,path,sets):
+
+		self.grid = grid
+
+		self.origin = origin
+
+		self.path = path
+
+		self.sets = sets
+
+	def make_board(self,grid):
+		'''
+		The function to make the actual board through which the laser can parse through
+		'''
+
+		meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
+
+		for i in range(len(grid)):
+			for j in range(len(grid[0])):
+				meshgrid[2*i+1][2*j+1] = grid[i][j]
+
+		return meshgrid
+
+		
 
 
 if __name__ == "__main__":
-	G = Game('yarn_5.bff')
+	G = Game('dark_1.bff')
 	G.database()
-	G.generate_boards()
-	
+
 	print('Grid =', G.grid)
-	print('Board =', G.boards)
 	print('Blocks =', G.blocks)
 	print('Laser path =', G.lazor_path)
 	print('Lazer initial =', G.lazor_start)
 	print('Point sets =', G.pointer)
+
+
+	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+
+	mesh = B.make_board(G.grid)
+	print(mesh)
