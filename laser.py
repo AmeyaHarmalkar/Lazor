@@ -1,8 +1,6 @@
 
 
-
-
-fptr = open('mad_1.bff', 'r').read()
+fptr = open('yarn_5.bff', 'r').read()
 all_lines = fptr.split('\n')
 raw_data = []
 
@@ -29,13 +27,14 @@ for line in grid_raw:
 
 grid = []
 
+
+
 for i in grid_raw:
 	trial_list = []
 	x = ''.join(i.split())
 	for letter in x:
 		trial_list.append(letter)
 	grid.append(trial_list)
-
 
 ## Generating the Laser direction tuple 
 
@@ -72,7 +71,9 @@ class Laser:
 
 	def trajectory(self,path, grid):
 
-		meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
+		meshgrid = [[0 for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
+
+		print(meshgrid)
 
 		#This is the test meshgrid
 		#meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -82,9 +83,16 @@ class Laser:
 
 		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
 
+		path_1 = []
+		intercept_new = []
+		#print(len(path_1))
+
+		print(len(meshgrid))
+		print(len(meshgrid[0]))
 		
 		
-		while intercepts[-1][0] != 0 and intercepts[-1][0] != 8 and intercepts[-1][1] != 0 and intercepts[-1][1] != 8:
+		while intercepts[-1][0] != 0 and intercepts[-1][0] != 2*len(grid[0])+1 and intercepts[-1][1] != 0 and intercepts[-1][1] != 2*len(grid)+1:
+
 
 			# The Directional path of the Laser beam
 			(dx, dy) = path[-1]
@@ -184,4 +192,5 @@ intcp, pth = A.trajectory(lazor_path,grid)
 
 print(intcp)
 print(pth)
+
 
