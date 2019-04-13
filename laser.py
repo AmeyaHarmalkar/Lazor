@@ -77,35 +77,36 @@ class Laser:
 
 		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
 
-		# The Directional path of the Laser beam
-		(dx, dy) = path[-1]
+		
+		
+		while intercepts[-1][0] != 0 and intercepts[-1][0] != 8 and intercepts[-1][1] != 0 and intercepts[-1][1] != 8:
 
-		# The last position of the laser
+			# The Directional path of the Laser beam
+			(dx, dy) = path[-1]
 
-		(cx, cy) = intercepts[-1]
+			# The last position of the laser
+			(cx, cy) = intercepts[-1]
 
-		# Finding the next point 
+			# Finding the next point 
 
-		nx = cx + dx
-		ny = cy + dy
+			nx = cx + dx
+			ny = cy + dy
 
-		print((nx,ny))
+			#print((nx,ny))
 
-		intercepts.append((nx,ny))
+			intercepts.append((nx,ny))
 
-		# Creating a buffer to check the surrounding positions
+			# Creating a buffer to check the surrounding positions
 
-		nlist = []
+			nlist = []
 
-		# Exploring the neighbours of the new point to modify directions
-
-		if nx != 0 and nx != 8 and ny != 0 and ny != 8:
+			# Exploring the neighbours of the new point to modify directions
 
 			for i in range(len(n_direct)):
 				ex = nx + n_direct[i][0]
 				ey = ny + n_direct[i][0]
 
-				if nx > 0 and nx < 2*len(grid) and ny > 0 and ny < 2*len(grid):
+				if ex > 0 and ex < 2*len(grid) and ey > 0 and ey < 2*len(grid):
 					#Just to perform a check that we are still within the grid
 					delta_x = ex-nx
 					delta_y = ey-ny
@@ -128,7 +129,7 @@ class Laser:
 					else:
 						path.append((dx,dy))
 
-			print(path[-1])
+			#print(path[-1])
 
 		return intercepts, path
 
@@ -138,7 +139,6 @@ class Laser:
 A = Laser(lazor_start,lazor_path)
 
 intcp, pth = A.trajectory(lazor_path,grid)
-#print(tuple(lazor_start))
 
-	
-#print(meshgrid)
+print(intcp)
+print(pth)
