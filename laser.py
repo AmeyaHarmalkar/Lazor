@@ -72,7 +72,10 @@ class Laser:
 
 	def trajectory(self,path, grid):
 
-		meshgrid = [[0 for i in range(2*len(grid))] for j in range(2*len(grid))]
+		#meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
+		meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+		[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 'A', 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+		[0, 0, 0, 'A', 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 		intercepts = [tuple(self.source)]
 
 		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
@@ -104,15 +107,26 @@ class Laser:
 
 			for i in range(len(n_direct)):
 				ex = nx + n_direct[i][0]
-				ey = ny + n_direct[i][0]
+				ey = ny + n_direct[i][1]
 
-				if ex > 0 and ex < 2*len(grid) and ey > 0 and ey < 2*len(grid):
+				if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
 					#Just to perform a check that we are still within the grid
 					delta_x = ex-nx
 					delta_y = ey-ny
+
+					print("X",ex,nx,delta_x)
+					print("Y",ey,ny,delta_y)
+
+
 					if meshgrid[ex][ey] == 'A':
-						new_dx = dx * delta_x
-						new_dy = dy * delta_y
+						if delta_x == 0:
+							new_dx = dx * 1
+						else:
+							new_dx = dx * -1
+						if delta_y == 0:
+							new_dy = dy * 1
+						else:
+							new_dy = dy * -1
 						path.append((new_dx,new_dy))
 
 					elif meshgrid[ex][ey] == 'B':
@@ -122,18 +136,33 @@ class Laser:
 
 
 					elif meshgrid[ex][ey] == 'C':
-						new_dx = dx * delta_x
-						new_dy = dy * delta_y
+						if delta_x == 0:
+							new_dx = dx * 1
+						else:
+							new_dx = dx * -1
+						if delta_y == 0:
+							new_dy = dy * 1
+						else:
+							new_dy = dy * -1
 						path.append((new_dx,new_dy))
 
 					else:
 						path.append((dx,dy))
 
-			#print(path[-1])
+			print(path[-1])
 
 		return intercepts, path
 
 
+
+
+
+#meshgrid = [[0 for i in range(2*len(grid)+1)] for j in range(2*len(grid)+1)]
+#meshgrid[1][5] = 'A'
+#meshgrid[5][1] = 'C'
+#meshgrid[7][3] = 'A'
+#meshgrid2 = meshgrid
+#print(meshgrid2)
 
 
 A = Laser(lazor_start,lazor_path)
@@ -141,4 +170,5 @@ A = Laser(lazor_start,lazor_path)
 intcp, pth = A.trajectory(lazor_path,grid)
 
 print(intcp)
-print(pth)
+#print(pth)
+
