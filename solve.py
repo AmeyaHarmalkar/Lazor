@@ -233,6 +233,7 @@ class Laser:
 			# Creating a buffer to check the surrounding positions
 
 			nlist = []
+			transmit_list = []
 
 			# Exploring the neighbours of the new point to modify directions
 
@@ -259,8 +260,7 @@ class Laser:
 							else:
 								new_dy = dy * -1
 							nlist.append((new_dx,new_dy))
-							print("X",ex,nx,delta_x)
-							print("Y",ey,ny,delta_y)
+
 
 						elif meshgrid[ex][ey] == 'B':
 							new_dx = dx * 0
@@ -277,23 +277,114 @@ class Laser:
 								new_dy = dy * 1
 							else:
 								new_dy = dy * -1
+							old_dx = dx
+							old_dy = dy
+							transmit_list.append((old_dx,old_dy))
 							nlist.append((new_dx,new_dy))
-							print("X",ex,nx,delta_x)
-							print("Y",ey,ny,delta_y)
 
-					
+
 				if len(nlist) > 0:
 					path.append(nlist[-1])
-					print(nlist)
 
 				else :
 					path.append((dx,dy))
+
+				if len(transmit_list) > 0 :
+					path_1.append(transmit_list[-1])
+					intercept_new.append((nx,ny))
 
 				#print(path[-1])
 			else :
 				break
 
-		return intercepts, path
+		# To check whether if the Laser falls on any refract block, as it will have an altered path later on. 
+		# The next if code will allow to explore an additional path with the origin of the laser instantiated at the point of the
+		# split
+
+		if len(path_1) != 0:
+
+			while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
+
+				(dx, dy) = path_1[-1]
+
+				# The last position of the laser
+				(cx, cy) = intercept_new[-1]
+
+				# Finding the next point 
+
+				nx = cx + dx
+				ny = cy + dy
+
+				#print((nx,ny))
+
+				intercept_new.append((nx,ny))
+
+				# Creating a buffer to check the surrounding positions
+
+				nlist = []
+				transmit_list = []
+
+				# Exploring the neighbours of the new point to modify directions
+
+				if (dx,dy) != (0,0):
+
+				#This will allow the loop to proceed only if there is a viable direction to proceed	
+
+					for i in range(len(n_direct)):
+						ex = nx + n_direct[i][0]
+						ey = ny + n_direct[i][1]
+
+						if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
+							#Just to perform a check that we are still within the grid
+							delta_x = ex-nx
+							delta_y = ey-ny
+
+							if meshgrid[ex][ey] == 'A':
+								if delta_x == 0:
+									new_dx = dx * 1
+								else:
+									new_dx = dx * -1
+								if delta_y == 0:
+									new_dy = dy * 1
+								else:
+									new_dy = dy * -1
+								nlist.append((new_dx,new_dy))
+
+
+							elif meshgrid[ex][ey] == 'B':
+								new_dx = dx * 0
+								new_dy = dy * 0
+								nlist.append((new_dx,new_dy))
+
+
+							elif meshgrid[ex][ey] == 'C':
+								if delta_x == 0:
+									new_dx = dx * 1
+								else:
+									new_dx = dx * -1
+								if delta_y == 0:
+									new_dy = dy * 1
+								else:
+									new_dy = dy * -1
+								old_dx = dx
+								old_dy = dy
+								transmit_list.append((old_dx,old_dy))
+								nlist.append((new_dx,new_dy))
+
+
+					if len(nlist) > 0:
+						path.append(nlist[-1])
+
+					else :
+						path.append((dx,dy))
+
+					#print(path[-1])
+				else :
+					break
+
+
+
+		return intercepts, path, intercept_new
 
 
 
@@ -311,17 +402,23 @@ if __name__ == "__main__":
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
 
-	mesh = B.make_board(G.grid)
+	mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
+
+	#mesh = B.make_board(G.grid)
 
 	#print(mesh)
 
 	L = Laser(G.lazor_start,G.lazor_path)
-	intcp, pth = L.trajectory(G.lazor_path,G.grid, mesh)
+	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
 
 	print(intcp)
 	print(pth)
 
-	print(B.sampler(G.grid))
-	print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
+	print(intercept_new)
+
+	print(intcp+intercept_new)
+
+	#print(B.sampler(G.grid))
+	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 
