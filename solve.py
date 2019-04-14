@@ -125,6 +125,17 @@ class Board:
 
 		self.sets = sets
 
+	def sampler(self, grid):
+
+		sample_space = []
+
+		for j in range(len(grid)):
+			for i in range(len(grid[0])):
+				if grid[j][i] == 'o':
+					sample_space.append(tuple((i,j)))
+					
+		return sample_space
+
 	def make_board(self,grid):
 		'''
 		The function to make the actual board through which the laser can parse through
@@ -254,7 +265,7 @@ class Laser:
 
 
 if __name__ == "__main__":
-	G = Game('yarn_5.bff')
+	G = Game('mad_1.bff')
 	G.database()
 
 	#print('Grid =', G.grid)
@@ -275,5 +286,7 @@ if __name__ == "__main__":
 
 	print(intcp)
 	print(pth)
+
+	print(B.sampler(G.grid))
 
 
