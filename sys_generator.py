@@ -88,6 +88,37 @@ net_grid = [i for j in grid for i in j]
 
 print(net_grid)
 
+#################################################
+#The following code Generating the game path    #
+#################################################
+
+
+# Obtaining Laser path to get a list of likely positions for first block
+
+# Method 1. Use laser positon and direction only
+# 			Get the length from laser to the edge of grid at laser direction, 
+#			generate all the position in laser path 
+#			check if the block position (laser path position (x+/-1, y+/-1)) is in net_grid,
+#			if so, add to list 
+
+
+
+
+
+# Method 2. use laser path already calculated in laser file
+#			Note: ameya needs to correct the trajectory() such that 
+#			1. the codes reads in raw input of block/laser position
+#			2. the code responses to different block properly 
+#			?? This might increase computing need ??
+
+
+
+
+
+
+
+
+
 
 # def MC_Generator(net_grid, blocks, steps):
 # 	'''

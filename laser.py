@@ -42,6 +42,7 @@ for i in grid_raw:
 lazor_start=[]
 lazor_path=[]
 
+
 for line in raw_data:
 	lazor_direction=[]
 	if 'L' in line:
@@ -56,6 +57,7 @@ for line in raw_data:
 		
 		else :
 			print("Does not match the expected format. Input error. Core Dump")
+
 
 
 class Laser:
@@ -114,8 +116,8 @@ class Laser:
 					delta_x = ex-nx
 					delta_y = ey-ny
 
-					print("X",ex,nx,delta_x)
-					print("Y",ey,ny,delta_y)
+					# print("X",ex,nx,delta_x)
+					# print("Y",ey,ny,delta_y)
 
 
 					if meshgrid[ex][ey] == 'A':
@@ -149,7 +151,7 @@ class Laser:
 					else:
 						path.append((dx,dy))
 
-			print(path[-1])
+			# print(path[-1])
 
 		return intercepts, path
 
@@ -164,11 +166,14 @@ class Laser:
 #meshgrid2 = meshgrid
 #print(meshgrid2)
 
+print lazor_start
+print lazor_path
+
 
 A = Laser(lazor_start,lazor_path)
 
 intcp, pth = A.trajectory(lazor_path,grid)
 
 print(intcp)
-#print(pth)
+print(pth)
 
