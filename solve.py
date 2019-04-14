@@ -136,6 +136,32 @@ class Board:
 					
 		return sample_space
 
+	def sample_board(self, sample_space, blocks, grid):
+
+		options = random.sample(sample_space, sum(blocks.values()))
+		nA = blocks['A']
+		nB = blocks['B']
+		nC = blocks['C']
+
+		for element in options:
+			(i,j) = element
+
+			if nA != 0 :
+				grid[j][i] = 'A'
+				nA = nA-1
+			
+			else:
+				if nB != 0 :
+					grid[j][i] = 'B'
+					nB = nB-1
+				else :
+					if nC != 0:
+						grid[j][i] = 'C'
+						nC = nC-1
+					else:
+						print("Some error")
+		return
+
 	def make_board(self,grid):
 		'''
 		The function to make the actual board through which the laser can parse through
