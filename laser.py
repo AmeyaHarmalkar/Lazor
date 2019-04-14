@@ -166,9 +166,6 @@ class Laser:
 #meshgrid2 = meshgrid
 #print(meshgrid2)
 
-print lazor_start
-print lazor_path
-
 
 A = Laser(lazor_start,lazor_path)
 

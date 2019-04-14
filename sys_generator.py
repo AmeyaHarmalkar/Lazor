@@ -1,7 +1,7 @@
 '''
 Last Edited: 13 Apr 2019 11:10 PM
 
-Edited by HX: Ongoing until 1 AM 14 Apr 2019, committed every 20 minutes
+Edited by HX: Ongoing
 
 
 In this script, we are going to generate the permutations of the given blocks within the griven 
@@ -20,6 +20,7 @@ from random import sample
 
 # !!! Ensure the laser module is computing the same game level
 import laser
+from laser import intcp
 
 
 #################################################
@@ -66,7 +67,6 @@ for line in grid_raw:
 	if line in raw_data:
 		raw_data.remove(line)
 
-#print(grid)
 
 blocks = {}
 
@@ -102,20 +102,35 @@ print(net_grid)
 #			if so, add to list 
 
 
-
-
-
 # Method 2. use laser path already calculated in laser file
 #			Note: ameya needs to correct the trajectory() such that 
 #			1. the codes reads in raw input of block/laser position
 #			2. the code responses to different block properly 
 #			?? This might increase computing need ??
 
+neighbor_direction = [(0 , 1), (0 , -1), (1, 0), (-1, 0)]
+likely_pos_1stblock = []
 
+for i in intcp:
+	for j in neighbor_direction:
+		each_pos_x = i[0] + j[0]
+		each_pos_y = i[1] + j[1]
+		each_pos = (each_pos_x, each_pos_y)
 
+		if each_pos not in likely_pos_1stblock:
+			likely_pos_1stblock.append(each_pos)
 
+			if each_pos_x % 2 == 0 or each_pos_y % 2 == 0 or each_pos_x < 1 or each_pos_y < 1:
+				likely_pos_1stblock.pop()
 
+# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
 
+print likely_pos_1stblock
+
+##################################################################################################
+HX Note To self:
+The list of allowed 1st blocks are generated, now do systematic approach, and account for other blocks
+##################################################################################################
 
 
 
