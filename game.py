@@ -103,6 +103,13 @@ class Game :
 				key = line[0]
 				self.blocks[key] = int(line[1])
 
+		if 'A' not in self.blocks:
+			self.blocks['A'] = 0
+		if 'B' not in self.blocks:
+			self.blocks['B'] = 0
+		if 'C' not in self.blocks:
+			self.blocks['C'] = 0
+
 	def generate_boards(self):
 		'''
 		This function is to generate all the possible combinations of boards that can be parsed through with the 
@@ -137,12 +144,11 @@ class Board:
 				meshgrid[2*i+1][2*j+1] = grid[i][j]
 
 		return meshgrid
-
 		
 
 
 if __name__ == "__main__":
-	G = Game('dark_1.bff')
+	G = Game('mad_7.bff')
 	G.database()
 
 	print('Grid =', G.grid)
@@ -155,4 +161,4 @@ if __name__ == "__main__":
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
 
 	mesh = B.make_board(G.grid)
-	print(mesh)
+	#print(mesh)
