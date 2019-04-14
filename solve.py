@@ -1,3 +1,5 @@
+import random
+
 
 class Game :
 	'''
@@ -102,6 +104,12 @@ class Game :
 				line = line.split()
 				key = line[0]
 				self.blocks[key] = int(line[1])
+		if 'A' not in self.blocks:
+			self.blocks['A'] = 0
+		if 'B' not in self.blocks:
+			self.blocks['B'] = 0
+		if 'C' not in self.blocks:
+			self.blocks['C'] = 0
 
 	def generate_boards(self):
 		'''
@@ -160,7 +168,7 @@ class Board:
 						nC = nC-1
 					else:
 						print("Some error")
-		return
+		return grid
 
 	def make_board(self,grid):
 		'''
@@ -314,5 +322,6 @@ if __name__ == "__main__":
 	print(pth)
 
 	print(B.sampler(G.grid))
+	print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 
