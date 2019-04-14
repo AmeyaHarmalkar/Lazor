@@ -1,6 +1,32 @@
+'''
+Last Edited: 13 Apr 2019 11:10 PM
+
+Edited by HX: Ongoing until 1 AM 14 Apr 2019, committed every 20 minutes
+
+
+In this script, we are going to generate the permutations of the given blocks within the griven 
+grid size. To save memory space and computation time, we are not going to record all the possible 
+permutations, but rather, systematically check each permutation, and break out from the loop when 
+a solution is found. Futher, for the positon of the first block, we will only consider the blocks 
+in the direction of laser. 
+
+'''
+
+
+
 import random
 import copy
 from random import sample
+
+# !!! Ensure the laser module is computing the same game level
+import laser
+
+
+#################################################
+#The following code performs input manipulation #
+#################################################
+
+
 
 fptr = open('mad_1.bff', 'r').read()
 all_lines = fptr.split('\n')
@@ -16,7 +42,11 @@ for line in all_lines:
 setup = fptr.split('\n')[9:]
 #print(setup)
 
-## Generating the game grid
+
+#################################################
+#The following code Generating the game grid    #
+#################################################
+
 
 grid_start = raw_data.index('GRID START')
 grid_stop = raw_data.index('GRID STOP')
@@ -98,15 +128,20 @@ def MC_Generator(net_grid, blocks, steps):
 		#for i in range(0,steps)
 
 		for i in range(len(net_grid)):
-			if i in rand_i:
-				if nA > 0 :
-					new_grid.append('A')
-					nA = nA-1
-				elif nA ==0 and nC > 0 :
-					new_grid.append('C')
-					nC = nC-1
-			else:
-				new_grid.append('o')
+
+			if net_grid[i] != 'x':
+				if i in rand_i:
+					if nA > 0 :
+						new_grid.append('A')
+						nA = nA-1
+					elif nA ==0 and nC > 0 :
+						new_grid.append('C')
+						nC = nC-1
+				else:
+					new_grid.append('o')
+
+			elif net_grid[i] == 'x':
+				new_grid.append('x')
 
 		
 			#print(rand_i)
