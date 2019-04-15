@@ -158,7 +158,12 @@ def Sys_Generator(net_grid, blocks, steps):
 	# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
 	print likely_pos_1stblock
 
-
+#################################################
+HX Note to self:
+now the coordinates to the 1st block probable position is identified, it needs to be converted to actual sequence
+You have mapped all the possible positions of blocks, simplely numerate the net_grid list, correlate it to the sequence list
+and do random seletion of position for 1st block, followed by putting it back to 
+#################################################
 
 
 if __name__ == "__main__":
