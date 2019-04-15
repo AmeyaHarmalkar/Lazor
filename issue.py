@@ -235,16 +235,16 @@ class Laser:
 				(dx, dy) = path[k][-1]
 
 				# The last position of the laser
-				(cx, cy) = intercepts[k][-1]
+				(nx, ny) = intercepts[k][-1]
 
 				# Finding the next point 
 
-				nx = cx + dx
-				ny = cy + dy
+				#nx = cx 
+				#ny = cy 
 
 				#print((nx,ny))
 
-				intercepts[k].append((nx,ny))
+				#intercepts[k].append((nx,ny))
 
 				# Creating a buffer to check the surrounding positions
 
@@ -298,7 +298,7 @@ class Laser:
 								old_dy = dy
 								transmit_list.append((old_dx,old_dy))
 								nlist.append((new_dx,new_dy))
-								
+
 
 					if len(nlist) > 0:
 						path[k].append(nlist[-1])
@@ -309,6 +309,13 @@ class Laser:
 					if len(transmit_list) > 0 :
 						path_1.append(transmit_list[-1])
 						intercept_new.append((nx,ny))
+
+					#print(path[k][-1])
+
+					nx += path[k][-1][0]
+					ny += path[k][-1][1]
+
+					intercepts[k].append((nx,ny))
 
 					#print(path[k])
 					#print(intercepts[k])
@@ -472,8 +479,8 @@ if __name__ == "__main__":
 
 
 '''
-for i in range(500000):
-	G = Game('yarn_5.bff')
+for i in range(1000):
+	G = Game('tiny_5.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
