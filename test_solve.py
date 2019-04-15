@@ -245,12 +245,12 @@ class Laser:
 					ex = nx + n_direct[i][0]
 					ey = ny + n_direct[i][1]
 
-					if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
+					if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
 						#Just to perform a check that we are still within the grid
 						delta_x = ex-nx
 						delta_y = ey-ny
 
-						if meshgrid[ex][ey] == 'A':
+						if meshgrid[ey][ex] == 'A':
 							if delta_x == 0:
 								new_dx = dx * 1
 							else:
@@ -262,13 +262,13 @@ class Laser:
 							nlist.append((new_dx,new_dy))
 
 
-						elif meshgrid[ex][ey] == 'B':
+						elif meshgrid[ey][ex] == 'B':
 							new_dx = dx * 0
 							new_dy = dy * 0
 							nlist.append((new_dx,new_dy))
 
 
-						elif meshgrid[ex][ey] == 'C':
+						elif meshgrid[ey][ex] == 'C':
 							if delta_x == 0:
 								new_dx = dx * 1
 							else:
@@ -339,7 +339,7 @@ class Laser:
 							delta_x = ex-nx
 							delta_y = ey-ny
 
-							if meshgrid[ex][ey] == 'A':
+							if meshgrid[ey][ex] == 'A':
 								if delta_x == 0:
 									new_dx = dx * 1
 								else:
@@ -351,13 +351,13 @@ class Laser:
 								nlist.append((new_dx,new_dy))
 
 
-							elif meshgrid[ex][ey] == 'B':
+							elif meshgrid[ey][ex] == 'B':
 								new_dx = dx * 0
 								new_dy = dy * 0
 								nlist.append((new_dx,new_dy))
 
 
-							elif meshgrid[ex][ey] == 'C':
+							elif meshgrid[ey][ex] == 'C':
 								if delta_x == 0:
 									new_dx = dx * 1
 								else:
@@ -390,7 +390,7 @@ class Laser:
 '''
 
 if __name__ == "__main__":
-	G = Game('mad_1.bff')
+	G = Game('mad_7.bff')
 	G.database()
 
 	#print('Grid =', G.grid)
@@ -407,6 +407,7 @@ if __name__ == "__main__":
 	#mesh = B.make_board(G.grid)
 
 	#print(mesh)
+	
 
 	L = Laser(G.lazor_start,G.lazor_path)
 	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
@@ -425,10 +426,10 @@ if __name__ == "__main__":
 
 	#print(B.sampler(G.grid))
 	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
-'''
 
+'''
 for i in range(500):
-	G = Game('mad_1.bff')
+	G = Game('mad_4.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
@@ -440,10 +441,11 @@ for i in range(500):
 	final_set = G.pointer
 	total_intcp = intcp+intercept_new
 
+	#print(final_set)
+	#print("The solution is :")
+
 	if all(x in total_intcp for x in final_set) == True:
 		print(total_intcp)
-
-
 
 
 
