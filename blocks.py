@@ -1,39 +1,45 @@
 ## Creating Class Obejcts for the blocks
-#testing the change
 
-class Opaque:
+class Block(object):
 	'''
-	This class defines the Opaque block. For now I have just defined it so that it can define the positioning of the blocks.
+	This class defines the block object and classifies according to the character of each of the blocks.
+	The characters of the blocks are :
+	A : Reflect block = reflects the incoming laser
+	B : Opaque block = stops the laser beam
+	C : Refract block = refracts the laser beam so that it passes through as well as reflects
 
-	**Functions**
-
-	__init__
+	We need the laser to basically either pass or reflect. If there is an opaque block, it won't do either.
+	Let's create a boolean so that we can get all the four cases .i.e. with no pass, with pass and no reflect, 
+	with reflect & no pass, and with reflect & pass
 
 	**Parameters**
 
 		x : the column numbering of the block
 		y : the row numbering of the block
 
-
 	'''
-	def __init__(self,x,y):
-		self.x = x
-		self.y = y
 
-class Reflect:
-	def __init__(self,x,y):
-		self.x = x
-		self.y = y
+	def __init__(self,block):
 
-class Refract:
-	def __init__(self,x,y):
-		self.x = x
-		self.y = y
+		self.block = block
+		
+		if block == "A":
+			self.through = False
+			self.reflect = True
+		elif block == "B":
+			self.through = False
+			self.reflect = False
+		elif block == "C":
+			self.through = True
+			self.reflect = True
+		else:
+			self.through = True
+			self.reflect = False
+
 
 
 ## Just a check!
 
-O2 = Opaque(2,4)
-print(O2.x)
-print(O2.y)
-
+O2 = Block('A').reflect
+print(O2)
+#print(O2.through)
