@@ -428,7 +428,7 @@ if __name__ == "__main__":
 	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 '''
-for i in range(500000):
+for i in range(5000000):
 	G = Game('mad_7.bff')
 	G.database()
 
@@ -447,6 +447,7 @@ for i in range(500000):
 	if all(x in total_intcp for x in final_set) == True:
 		print(total_intcp)
 
+print("code finished running")
 
 
 
