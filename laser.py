@@ -22,7 +22,6 @@ grid_stop = raw_data.index('GRID STOP')
 grid_raw = raw_data[grid_start+1:grid_stop]
 
 
-
 for line in grid_raw:
 	if line in raw_data:
 		raw_data.remove(line)
@@ -37,6 +36,7 @@ for i in grid_raw:
 	for letter in x:
 		trial_list.append(letter)
 	grid.append(trial_list)
+
 
 
 ## Generating the Laser direction tuple 

@@ -22,7 +22,7 @@ from random import sample
 import laser
 from laser import intcp
 from laser import Laser
-from laser import grid as laser_grid
+
 
 #################################################
 #The following code performs input manipulation #
@@ -77,11 +77,21 @@ for line in raw_data:
 		key = line[0]
 		blocks[key] = int(line[1])
 
+if 'A' not in blocks.keys():
+	blocks.update({'A':0})
+
+if 'B' not in blocks.keys():
+	blocks.update({'B':0})
+
+if 'C' not in blocks.keys():
+	blocks.update({'C':0})
+
 ## First we will flatten the array into a 2D list for the sake of convenience and binning.
 
 net_grid = [i for j in grid for i in j]
 
 print net_grid
+# print grid
 
 ## Replacing the string vacancies to integers
 
@@ -109,18 +119,18 @@ print net_grid
 #			2. the code responses to different block properly 
 #			?? This might increase computing need ??
 
+# The following code generates all the allowed block coordinates in a list 
+all_block_pos = []
+for i in range(len(grid)):
+	for j in range(len(grid[0])):
+		all_block_pos.append((2*j+1, 2*i + 1))
 
-def Sys_Generator(fine_grid, blocks, steps):
+print all_block_pos
+
+
+def Sys_Generator(net_grid, blocks, steps):
 
 	# Applying Method 2:
-
-	# The following code generates all the allowed block coordinates in a list 
-	all_block_pos = []
-	for i in range(len(fine_grid)):
-		for j in range(len(fine_grid[0])):
-			all_block_pos.append((2*j+1, 2*i + 1))
-
-	# print all_block_pos
 
 	neighbor_direction = [(0 , 1), (0 , -1), (1, 0), (-1, 0)]
 	likely_pos_1stblock = []
@@ -139,84 +149,21 @@ def Sys_Generator(fine_grid, blocks, steps):
 
 
 	nA = blocks['A']
-	#nB = blocks['B']
-	#nC = blocks['C']
+	nB = blocks['B']
+	nC = blocks['C']
 	ensemble = []
 
 	count = 0
 
 	# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
-	print likely_pos_1stblock
+	#print likely_pos_1stblock
 
 
-
-# def MC_Generator(net_grid, blocks, steps):
-# 	'''
-# 	This is a Monte Carlo based random board generator. We are using a Monte carlo methodology instead of
-# 	the usual iterative recursive methodology because we believe that Monte carlo with some smart intelligent bias will be faster to parse.
-
-# 	**Parameters**
-# 		net_grid : *list,str*
-# 			This is a list of strings stating the nature of the grid. Note that it is not a nested list.
-# 		blocks : *dict*
-# 			This is a dict which contains the data about the blocks classified by its type.
-# 		steps : *int*
-# 			The steps are the number of Monte Carlo steps you want to perform. Code needs to be rectified a bit to make sure that it 
-# 			is unrelated to the number of decoy boards in the output.
-
-# 	**Returns*
-# 		ensemble : *list,str*
-# 			This is a list of strings for now. Modifying the code incorporates running the program and testing it simultaneously so that
-# 			we don't store anything in memory.
-
-# 	'''
-
-	
-# 	nA = blocks['A']
-# 	nC = blocks['C']
-# 	ensemble = []
-
-# 	count = 0
-
-# 	for i in range(0,steps):
-
-# 		nA = blocks['A']
-# 		nC = blocks['C']
-
-# 		rand_i = random.sample(range(0,len(net_grid)),3)
-# 		new_grid = []
-
-# 		#for i in range(0,steps)
-
-# 		for i in range(len(net_grid)):
-
-# 			if net_grid[i] != 'x':
-# 				if i in rand_i:
-# 					if nA > 0 :
-# 						new_grid.append('A')
-# 						nA = nA-1
-# 					elif nA ==0 and nC > 0 :
-# 						new_grid.append('C')
-# 						nC = nC-1
-# 				else:
-# 					new_grid.append('o')
-
-# 			elif net_grid[i] == 'x':
-# 				new_grid.append('x')
-
-		
-# 			#print(rand_i)
-# 			#print(new_grid)
-
-# 		ensemble.append(new_grid)
-# 		#count += 1
-
-# 	return ensemble
 
 
 if __name__ == "__main__":
 
-	Sys_Generator(laser_grid, blocks, 10)
+	Sys_Generator(net_grid, blocks, 10)
 
 
 	# ans = MC_Generator(net_grid, blocks, 10)

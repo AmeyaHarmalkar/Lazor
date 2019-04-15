@@ -28,7 +28,7 @@ import laser
 
 
 
-fptr = open('mad_1.bff', 'r').read()
+fptr = open('yarn_5.bff', 'r').read()
 all_lines = fptr.split('\n')
 raw_data = []
 
@@ -112,7 +112,7 @@ def MC_Generator(net_grid, blocks, steps):
 
 	
 	nA = blocks['A']
-	nC = blocks['C']
+	#nC = blocks['C']
 	ensemble = []
 
 	count = 0
@@ -120,7 +120,7 @@ def MC_Generator(net_grid, blocks, steps):
 	for i in range(0,steps):
 
 		nA = blocks['A']
-		nC = blocks['C']
+		#nC = blocks['C']
 
 		rand_i = random.sample(range(0,len(net_grid)),3)
 		new_grid = []
@@ -167,8 +167,6 @@ if __name__ == "__main__":
 	for i in ans:
 		A = [i[x:x+4] for x in range(0,len(i),4)]
 		print(A)
-
-
 
 
 
