@@ -201,7 +201,7 @@ class Laser:
 
 		#meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
 
-		#print(meshgrid)
+		print(meshgrid)
 
 		intercepts = [tuple(self.source[0])]
 

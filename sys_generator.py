@@ -160,16 +160,28 @@ def Sys_Generator(net_grid, blocks, steps):
 
 	rand_1st_block = random.sample(likely_pos_1stblock, 1)[0]
 	print rand_1st_block
+	
+	# Counter was added here to warn the user of the case where all the block positions neighboring
+	# initial laser trajectory is occupied at the begining of the game
 
+	counter = 0
 	while rand_1st_block in all_block_pos:
 		block_index = all_block_pos.index(rand_1st_block)
 		
+		if counter > 16:
+			print("no probable position for 1st block based on initial laser trajectory")
+			break
+
+
 		if net_grid[(block_index)] == 'o':
 			print block_index
 			break
 			
 		else:
 			rand_1st_block = random.sample(likely_pos_1stblock, 1)[0]
+
+		counter +=1
+
 		
 
 
