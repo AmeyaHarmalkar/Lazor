@@ -428,7 +428,7 @@ if __name__ == "__main__":
 	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 '''
-for i in range(5000000):
+for i in range(500):
 	G = Game('mad_7.bff')
 	G.database()
 

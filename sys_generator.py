@@ -125,7 +125,7 @@ for i in range(len(grid)):
 	for j in range(len(grid[0])):
 		all_block_pos.append((2*j+1, 2*i + 1))
 
-# print all_block_pos
+print all_block_pos
 
 
 def Sys_Generator(net_grid, blocks, steps):
@@ -158,12 +158,28 @@ def Sys_Generator(net_grid, blocks, steps):
 	# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
 	print likely_pos_1stblock
 
-#################################################
-HX Note to self:
-now the coordinates to the 1st block probable position is identified, it needs to be converted to actual sequence
-You have mapped all the possible positions of blocks, simplely numerate the net_grid list, correlate it to the sequence list
-and do random seletion of position for 1st block, followed by putting it back to 
-#################################################
+	rand_1st_block = random.sample(likely_pos_1stblock, 1)[0]
+	print rand_1st_block
+
+	while rand_1st_block in all_block_pos:
+		block_index = all_block_pos.index(rand_1st_block)
+		
+		if net_grid[(block_index)] == 'o':
+			print block_index
+			break
+			
+		else:
+			rand_1st_block = random.sample(likely_pos_1stblock, 1)[0]
+		
+
+
+
+# #################################################
+# HX Note to self:
+# now the coordinates to the 1st block probable position is identified, it needs to be converted to actual sequence
+# You have mapped all the possible positions of blocks, simplely numerate the net_grid list, correlate it to the sequence list
+# and do random seletion of position for 1st block, followed by putting it back to 
+# #################################################
 
 
 if __name__ == "__main__":
