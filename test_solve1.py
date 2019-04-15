@@ -352,14 +352,20 @@ class Laser:
 							delta_y = ey-ny
 
 							if meshgrid[ex][ey] == 'A':
-								if delta_x == 0:
-									new_dx = dx * 1
+								if nx % 2 == 0:
+									if delta_x == dx:
+										new_dx = -1 * dx
+										new_dy = dy 
+									else:
+										new_dx = dx
+										new_dy = -1 * dy
 								else:
-									new_dx = dx * -1
-								if delta_y == 0:
-									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
+									if delta_y == dy:
+										new_dx = dx 
+										new_dy = -1 * dy
+									else:
+										new_dx = -1 * dx
+										new_dy = dy
 								nlist.append((new_dx,new_dy))
 
 
@@ -370,14 +376,20 @@ class Laser:
 
 
 							elif meshgrid[ex][ey] == 'C':
-								if delta_x == 0:
-									new_dx = dx * 1
+								if nx % 2 == 0:
+									if delta_x == dx:
+										new_dx = -1 * dx
+										new_dy = dy 
+									else:
+										new_dx = dx
+										new_dy = -1 * dy
 								else:
-									new_dx = dx * -1
-								if delta_y == 0:
-									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
+									if delta_y == dy:
+										new_dx = dx 
+										new_dy = -1 * dy
+									else:
+										new_dx = -1 * dx
+										new_dy = dy
 								old_dx = dx
 								old_dy = dy
 								transmit_list.append((old_dx,old_dy))
