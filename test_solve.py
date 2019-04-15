@@ -428,8 +428,8 @@ if __name__ == "__main__":
 	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 '''
-for i in range(500):
-	G = Game('mad_4.bff')
+for i in range(500000):
+	G = Game('mad_7.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
