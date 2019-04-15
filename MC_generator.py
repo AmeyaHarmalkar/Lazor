@@ -124,9 +124,14 @@ def MC_Generator(net_grid, blocks, steps):
 
 		rand_i = random.sample(range(0,len(net_grid)),3)
 		new_grid = []
+		print rand_i
+
 
 		#for i in range(0,steps)
 
+
+		# !!! This does not address the fixed blocks in game grid
+		 
 		for i in range(len(net_grid)):
 
 			if net_grid[i] != 'x':

@@ -21,7 +21,8 @@ from random import sample
 # !!! Ensure the laser module is computing the same game level
 import laser
 from laser import intcp
-
+from laser import Laser
+from laser import grid as laser_grid
 
 #################################################
 #The following code performs input manipulation #
@@ -29,7 +30,7 @@ from laser import intcp
 
 
 
-fptr = open('mad_1.bff', 'r').read()
+fptr = open('yarn_5.bff', 'r').read()
 all_lines = fptr.split('\n')
 raw_data = []
 
@@ -80,13 +81,13 @@ for line in raw_data:
 
 net_grid = [i for j in grid for i in j]
 
+print net_grid
+
 ## Replacing the string vacancies to integers
 
 #for n,i in enumerate(net_grid):
 	#if i == 'o':
 		#net_grid[n] = 0
-
-print(net_grid)
 
 #################################################
 #The following code Generating the game path    #
@@ -108,30 +109,44 @@ print(net_grid)
 #			2. the code responses to different block properly 
 #			?? This might increase computing need ??
 
-neighbor_direction = [(0 , 1), (0 , -1), (1, 0), (-1, 0)]
-likely_pos_1stblock = []
 
-for i in intcp:
-	for j in neighbor_direction:
-		each_pos_x = i[0] + j[0]
-		each_pos_y = i[1] + j[1]
-		each_pos = (each_pos_x, each_pos_y)
+def Sys_Generator(fine_grid, blocks, steps):
 
-		if each_pos not in likely_pos_1stblock:
-			likely_pos_1stblock.append(each_pos)
+	# Applying Method 2:
 
-			if each_pos_x % 2 == 0 or each_pos_y % 2 == 0 or each_pos_x < 1 or each_pos_y < 1:
-				likely_pos_1stblock.pop()
+	# The following code generates all the allowed block coordinates in a list 
+	all_block_pos = []
+	for i in range(len(fine_grid)):
+		for j in range(len(fine_grid[0])):
+			all_block_pos.append((2*j+1, 2*i + 1))
 
-# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
+	# print all_block_pos
 
-print likely_pos_1stblock
+	neighbor_direction = [(0 , 1), (0 , -1), (1, 0), (-1, 0)]
+	likely_pos_1stblock = []
 
-##################################################################################################
-HX Note To self:
-The list of allowed 1st blocks are generated, now do systematic approach, and account for other blocks
-##################################################################################################
+	for i in intcp:
+		for j in neighbor_direction:
+			each_pos_x = i[0] + j[0]
+			each_pos_y = i[1] + j[1]
+			each_pos = (each_pos_x, each_pos_y)
 
+			if each_pos not in likely_pos_1stblock:
+				likely_pos_1stblock.append(each_pos)
+
+				if each_pos not in all_block_pos: 
+					likely_pos_1stblock.pop()
+
+
+	nA = blocks['A']
+	#nB = blocks['B']
+	#nC = blocks['C']
+	ensemble = []
+
+	count = 0
+
+	# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
+	print likely_pos_1stblock
 
 
 
@@ -201,7 +216,7 @@ The list of allowed 1st blocks are generated, now do systematic approach, and ac
 
 if __name__ == "__main__":
 
-	pass
+	Sys_Generator(laser_grid, blocks, 10)
 
 
 	# ans = MC_Generator(net_grid, blocks, 10)

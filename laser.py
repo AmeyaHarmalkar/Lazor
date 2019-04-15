@@ -21,6 +21,8 @@ grid_stop = raw_data.index('GRID STOP')
 
 grid_raw = raw_data[grid_start+1:grid_stop]
 
+
+
 for line in grid_raw:
 	if line in raw_data:
 		raw_data.remove(line)
@@ -35,6 +37,7 @@ for i in grid_raw:
 	for letter in x:
 		trial_list.append(letter)
 	grid.append(trial_list)
+
 
 ## Generating the Laser direction tuple 
 
@@ -73,7 +76,7 @@ class Laser:
 
 		meshgrid = [[0 for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
 
-		print(meshgrid)
+		#print(meshgrid)
 
 		#This is the test meshgrid
 		#meshgrid = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 'A', 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -87,8 +90,8 @@ class Laser:
 		intercept_new = []
 		#print(len(path_1))
 
-		print(len(meshgrid))
-		print(len(meshgrid[0]))
+		# print(len(meshgrid))
+		# print(len(meshgrid[0]))
 		
 		
 		while intercepts[-1][0] != 0 and intercepts[-1][0] != 2*len(grid[0])+1 and intercepts[-1][1] != 0 and intercepts[-1][1] != 2*len(grid)+1:
@@ -190,7 +193,7 @@ A = Laser(lazor_start,lazor_path)
 
 intcp, pth = A.trajectory(lazor_path,grid)
 
-print(intcp)
-print(pth)
+#print(intcp)
+#print(pth)
 
 
