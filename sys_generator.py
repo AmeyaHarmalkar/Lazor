@@ -125,7 +125,7 @@ for i in range(len(grid)):
 	for j in range(len(grid[0])):
 		all_block_pos.append((2*j+1, 2*i + 1))
 
-print all_block_pos
+# print all_block_pos
 
 
 def Sys_Generator(net_grid, blocks, steps):
@@ -156,7 +156,7 @@ def Sys_Generator(net_grid, blocks, steps):
 	count = 0
 
 	# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
-	#print likely_pos_1stblock
+	print likely_pos_1stblock
 
 
 
