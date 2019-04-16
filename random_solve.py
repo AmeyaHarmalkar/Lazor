@@ -821,7 +821,7 @@ for i in range(500000):
 ## Outputs into a file
 
 for i in range(500000):
-	G = Game('tiny_5.bff')
+	G = Game('mad_7.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)

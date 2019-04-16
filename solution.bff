@@ -1,3 +1,5 @@
-A	B	o	
-A	A	o	
-o	C	o	
+o	o	A	o	o	
+o	o	o	A	o	
+A	o	A	o	x	
+o	o	o	A	o	
+o	o	A	o	o	
