@@ -287,18 +287,25 @@ class Laser:
 
 
 							elif meshgrid[ey][ex] == 'C':
-								if delta_x == 0:
+								if delta_x == dx or delta_y == dy:
+
+									if delta_x == 0:
+										new_dx = dx * 1
+									else:
+										new_dx = dx * -1
+									if delta_y == 0:
+										new_dy = dy * 1
+									else:
+										new_dy = dy * -1
+									old_dx = dx
+									old_dy = dy
+									transmit_list.append((old_dx,old_dy))
+									nlist.append((new_dx,new_dy))
+								else:
 									new_dx = dx * 1
-								else:
-									new_dx = dx * -1
-								if delta_y == 0:
 									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
-								old_dx = dx
-								old_dy = dy
-								transmit_list.append((old_dx,old_dy))
-								nlist.append((new_dx,new_dy))
+									nlist.append((new_dx,new_dy))
+
 
 
 					if len(nlist) > 0:
@@ -384,18 +391,26 @@ class Laser:
 
 
 							elif meshgrid[ey][ex] == 'C':
-								if delta_x == 0:
+								if delta_x == dx or delta_y == dy:
+
+									if delta_x == 0:
+										new_dx = dx * 1
+									else:
+										new_dx = dx * -1
+									if delta_y == 0:
+										new_dy = dy * 1
+									else:
+										new_dy = dy * -1
+									old_dx = dx
+									old_dy = dy
+									transmit_list.append((old_dx,old_dy))
+									nlist.append((new_dx,new_dy))
+
+								else:
+
 									new_dx = dx * 1
-								else:
-									new_dx = dx * -1
-								if delta_y == 0:
 									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
-								old_dx = dx
-								old_dy = dy
-								transmit_list.append((old_dx,old_dy))
-								nlist.append((new_dx,new_dy))
+									nlist.append((new_dx,new_dy))
 
 
 					if len(nlist) > 0:
@@ -439,21 +454,19 @@ class Laser:
 
 			if len(path_1) != 0:
 
+				#print(path_1)
+
 				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
 
 					(dx, dy) = path_1[-1]
 
 				# The last position of the laser
-					(cx, cy) = intercept_new[-1]
+					(nx, ny) = intercept_new[-1]
 
 				# Finding the next point 
 
-					nx = cx + dx
-					ny = cy + dy
-
 				#print((nx,ny))
 
-					intercept_new.append((nx,ny))
 
 				# Creating a buffer to check the surrounding positions
 
@@ -470,7 +483,7 @@ class Laser:
 							ex = nx + n_direct[i][0]
 							ey = ny + n_direct[i][1]
 
-							if ex > 0 and ex < 2*len(grid)+1 and ey > 0 and ey < 2*len(grid)+1:
+							if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
 									#Just to perform a check that we are still within the grid
 								delta_x = ex-nx
 								delta_y = ey-ny
@@ -514,6 +527,11 @@ class Laser:
 						else :
 							path[k].append((dx,dy))
 
+						nx += path_1[-1][0]
+						ny += path_1[-1][1]
+
+						intercept_new.append((nx,ny))
+
 				#print(path[-1])
 				else :
 					break
@@ -528,6 +546,36 @@ class Laser:
 
 
 		return final_intercept_list, path, intercept_new
+
+
+# Define a global function to solve the mesh
+
+def outputter(mesh):
+
+	print("Analyzing and preparing files for output...")
+
+	solution = []
+
+	for j in range(1,len(mesh), 2):
+		for i in range(1, len(mesh[0]), 2):
+			solution.append(mesh[j][i])
+
+	width = int((len(mesh[0])-1) * 0.5)
+
+	solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
+
+	file = open('solution.bff', 'w')
+
+	for i in solution:
+		for j in i:
+			file.write(j)
+			file.write('\t')
+		file.write('\n')
+	file.close()
+
+	print("Solution found!")
+
+
 
 
 '''
@@ -611,19 +659,21 @@ for i in range(500000):
 #print(final_set)
 
 
-
-
 '''
 
 ## Outputs into a file
 
 for i in range(500000):
-	G = Game('dark_1.bff')
+	G = Game('tiny_5.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
 
-	mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
+	mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+
+	mesh = B.make_board(mesh_board)
+
+	#mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 	#print(mesh)
 
@@ -642,36 +692,14 @@ for i in range(500000):
 
 	if all(x in total_intcp for x in final_set) == True:
 		print("Yay")
+		print(intcp)
+		print(intercept_new)
 		print(total_intcp)
-# print mesh
-		# print len(mesh)
-		# print len(mesh[0])
-
-		solution = []
-
-		for j in range(1, len(mesh), 2):
-			for i in range(1, len(mesh[0]), 2):
-				solution.append(mesh[j][i])
-
-		width = int((len(mesh[0])-1) * 0.5)
-
-		solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
-
-		# print solution
-
-		file = open('solution.bff', 'w')
-		for i in solution:
-			for j in i:
-				file.write(j)
-				file.write('\t')
-			file.write('\n')
-		file.close()
-				
-
-		#print(total_intcp)
+		mesh2 = mesh
+		outputter(mesh2)
 		break
 
-
+#print("Running the outputter")
 
 
 print("code finished running")
