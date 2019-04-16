@@ -190,27 +190,30 @@ def Sys_Generator(net_grid, blocks, steps):
 			block_index_list.append(rand_i)
 
 
-		for j in range(len(net_grid)):
-			if net_grid[j] == 'o':
-				if j in block_index_list:
-					if nA > 0:
-						new_grid.append('A')
-						nA = nA - 1
-					if nA == 0 and nB >0:
-						new_grid.append('B')
-						nB = nB - 1
+			for j in range(len(net_grid)):
+				if net_grid[j] == 'o':
+					if j in block_index_list:
+						if nA > 0:
+							new_grid.append('A')
+							nA = nA - 1
+						if nA == 0 and nB >0:
+							new_grid.append('B')
+							nB = nB - 1
 
-					elif nA == 0 and nB == 0 and nC >0:
-						new_grid.append('C')
+						elif nA == 0 and nB == 0 and nC >0:
+							new_grid.append('C')
+							nC = nC - 1
+
+
+					else:
+						new_grid.append('o')
+
 				else:
-					new_grid.append('o')
+					new_grid.append(net_grid[j])
 
-			else:
-				new_grid.append(net_grid[j])
+				# print new_grid
 
-		ensemble.append(new_grid)
-
-
+			ensemble.append(new_grid)
 
 	return ensemble
 
@@ -230,7 +233,9 @@ def Sys_Generator(net_grid, blocks, steps):
 
 if __name__ == "__main__":
 
-	Sys_Generator(net_grid, blocks, 10)
+	a = Sys_Generator(net_grid, blocks, 10)
+	print len(a)
+
 
 
 	# ans = MC_Generator(net_grid, blocks, 10)
