@@ -280,8 +280,12 @@ class Laser:
 
 
 							elif meshgrid[ey][ex] == 'B':
-								new_dx = dx * 0
-								new_dy = dy * 0
+								if delta_x == dx or delta_y == dy:
+									new_dx = dx * 0
+									new_dy = dy * 0
+								else :
+									new_dx = dx * 1
+									new_dy = dy * 1
 								nlist.append((new_dx,new_dy))
 
 
@@ -479,8 +483,8 @@ if __name__ == "__main__":
 
 
 '''
-for i in range(1000):
-	G = Game('tiny_5.bff')
+for i in range(500000):
+	G = Game('yarn_5.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
