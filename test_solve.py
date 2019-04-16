@@ -201,7 +201,7 @@ class Laser:
 
 		#meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
 
-		print(meshgrid)
+		#print(meshgrid)
 
 		intercepts = [tuple(self.source[0])]
 
@@ -428,24 +428,57 @@ if __name__ == "__main__":
 	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
 '''
-for i in range(500):
-	G = Game('mad_7.bff')
+for i in range(50000):
+	G = Game('mad_1.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
 
 	mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
 
+
 	L = Laser(G.lazor_start,G.lazor_path)
+
 	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
 	final_set = G.pointer
+
 	total_intcp = intcp+intercept_new
 
 	#print(final_set)
 	#print("The solution is :")
 
 	if all(x in total_intcp for x in final_set) == True:
-		print(total_intcp)
+		
+		# print mesh
+		# print len(mesh)
+		# print len(mesh[0])
+
+		solution = []
+
+		for i in range(1, len(mesh), 2):
+			for j in range(1, len(mesh), 2):
+				solution.append(mesh[i][j])
+
+		width = int((len(mesh[0])-1) * 0.5)
+
+		solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
+
+		# print solution
+
+		file = open('solution.bff', 'w')
+		for i in solution:
+			for j in i:
+				file.write(j)
+				file.write('\t')
+			file.write('\n')
+		file.close()
+				
+
+		#print(total_intcp)
+		break
+
+
+
 
 print("code finished running")
 

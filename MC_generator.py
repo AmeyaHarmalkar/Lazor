@@ -66,7 +66,7 @@ for line in grid_raw:
 	if line in raw_data:
 		raw_data.remove(line)
 
-#print(grid)
+print(grid)
 
 blocks = {}
 
