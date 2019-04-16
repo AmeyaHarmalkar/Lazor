@@ -193,6 +193,15 @@ def Sys_Generator(net_grid, blocks, steps):
 			for j in range(len(net_grid)):
 				if net_grid[j] == 'o':
 					if j in block_index_list:
+						if nA > 0 and nC >0:
+							block_input = random.choice(['A', 'C'])
+							new_grid.append(block_input)
+							if block_input == 'A':
+								nA = nA - 1
+
+							if block_input == 'C':
+								nC = nC - 1
+
 						if nA > 0:
 							new_grid.append('A')
 							nA = nA - 1
@@ -235,7 +244,7 @@ if __name__ == "__main__":
 
 	a = Sys_Generator(net_grid, blocks, 10)
 	print len(a)
-
+	print a
 
 
 	# ans = MC_Generator(net_grid, blocks, 10)
