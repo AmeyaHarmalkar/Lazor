@@ -128,7 +128,7 @@ def MC_Generator(net_grid, blocks, steps):
 
 
 		#for i in range(0,steps)
-
+		#print new_grid
 
 		# !!! This does not address the fixed blocks in game grid
 		 
