@@ -245,5 +245,3 @@ if __name__ == "__main__":
 	# for i in ans:
 	# 	A = [i[x:x+4] for x in range(0,len(i),4)]
 	# 	print(A)
-
-
