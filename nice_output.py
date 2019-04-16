@@ -111,11 +111,6 @@ class Game :
 		if 'C' not in self.blocks:
 			self.blocks['C'] = 0
 
-	def generate_boards(self):
-		'''
-		This function is to generate all the possible combinations of boards that can be parsed through with the 
-		available blocks. 
-		'''
 
 
 class Board:
@@ -176,7 +171,9 @@ class Board:
 
 	def make_board(self,grid):
 		'''
-		The function to make the actual board through which the laser can parse through
+		The function to make the actual board through which the laser can parse through. It converts the sample_board of 
+		dimension (i*j) to a board of dimensions (2i+1)*(2j+1). This is important as the lazor passes through the midpoints
+
 		'''
 
 		meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
@@ -186,6 +183,40 @@ class Board:
 				meshgrid[2*i+1][2*j+1] = grid[i][j]
 
 		return meshgrid
+
+
+class Blocks:
+	'''
+	This class defines the 'reflect' and 'transmit' properties for each position in the game board.
+	'''
+	def __init__(self,x,y):
+		self.x = x
+		self.y = y
+	def prop(self, meshgrid):
+		'''
+		This function specifies the 'reflect' and 'transmit' properties as booleans
+		**Parameter**
+			self.x: *int* - position row coordinate
+			self.y: *int* - position column coordinate
+		
+		**Returns**
+			self.reflect: *boolean* - whether the position reflects the laser
+			self.transmit: *boolean* - whether the position allows laser to transmit through
+		'''
+
+		if meshgrid[self.y][self.x] == 'A':
+			self.reflect = True
+			self.transmit = False
+		elif meshgrid[self.y][self.x] == 'B':
+			self.reflect = False
+			self.transmit = False
+		elif meshgrid[self.y][self.x] == 'C':
+			self.reflect = True
+			self.transmit = True
+		else:
+			self.reflect = False
+			self.transmit = True
+		return self.reflect, self.transmit
 
 
 
@@ -200,6 +231,131 @@ class Laser:
 
 	def pos_chk(x, y, nBlocks):
 		return x >= 0 and x < nBlocks and y >= 0 and y < nBlocks
+
+	def laser_strikes(path, intercepts, grid, meshgrid):
+		'''
+		The function to predict where a lazor beam will strike. This is a function that will analyze at each point of the lazor
+		beam. It will check whether their are any block neighbours, what are the characteristics of those block neighbours and will
+		perform suitable operations on them accordingly. 
+
+		**Parameters**
+
+			path : *list,tuple*
+				A list of tuples containing the direction of the lazor.
+
+			intercepts : *list,tuple*
+				A list of tuples containing the intercepts through which the lazor beam passes through.
+
+			grid : *list,list,str*
+				A nested list of strings that denotes the positioning of the blocks in the game. Subset of meshgrid
+
+			meshgrid : *list,list,str*
+				A nested list of strings derived from the grid, indicating all the positions of the blocks as well as the
+				positions/points, through which the lazor can pass through.
+
+		**Returns**
+
+			path, intercepts
+
+
+
+		'''
+		(dx, dy) = path[-1]
+
+		# The last position of the laser
+		(nx, ny) = intercepts[-1]
+
+
+		# Creating a buffer to check the surrounding positions
+
+		nlist = []
+		transmit_list = []
+
+		# Exploring the neighbours of the new point to modify directions
+
+		if (dx,dy) != (0,0):
+
+		#This will allow the loop to proceed only if there is a viable direction to proceed	
+
+			for i in range(len(n_direct)):
+				
+				ex = nx + n_direct[i][0]
+				ey = ny + n_direct[i][1]
+
+				if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
+					#Just to perform a check that we are still within the grid
+					delta_x = ex-nx
+					delta_y = ey-ny
+
+					if meshgrid[ey][ex] == 'A':
+
+						if delta_x == dx or delta_y == dy:
+
+							if delta_x == 0:
+								new_dx = dx * 1
+							else:
+								new_dx = dx * -1
+							if delta_y == 0:
+								new_dy = dy * 1
+							else:
+								new_dy = dy * -1
+							nlist.append((new_dx,new_dy))
+
+						else:
+
+							new_dx = dx * 1
+							new_dy = dy * 1
+							nlist.append((new_dx,new_dy))
+
+
+					elif meshgrid[ey][ex] == 'B':
+
+						if delta_x == dx or delta_y == dy:
+							new_dx = dx * 0
+							new_dy = dy * 0
+						else :
+							new_dx = dx * 1
+							new_dy = dy * 1
+						nlist.append((new_dx,new_dy))
+
+
+					elif meshgrid[ey][ex] == 'C':
+
+						if delta_x == dx or delta_y == dy:
+
+							if delta_x == 0:
+								new_dx = dx * 1
+							else:
+								new_dx = dx * -1
+							if delta_y == 0:
+								new_dy = dy * 1
+							else:
+								new_dy = dy * -1
+							old_dx = dx
+							old_dy = dy
+							transmit_list.append((old_dx,old_dy))
+							nlist.append((new_dx,new_dy))
+
+						else:
+
+							new_dx = dx * 1
+							new_dy = dy * 1
+							nlist.append((new_dx,new_dy))
+
+
+			if len(nlist) > 0:
+							
+				path.append(nlist[-1])
+
+			else :
+				path[k].append((dx,dy))
+
+			nx += path[-1][0]
+			ny += path[-1][1]
+
+			intercepts.append((nx,ny))
+
+		return path,intercepts
 
 
 	def trajectory(self, path, grid, meshgrid):
@@ -263,6 +419,7 @@ class Laser:
 							#Just to perform a check that we are still within the grid
 							delta_x = ex-nx
 							delta_y = ey-ny
+
 
 							if meshgrid[ey][ex] == 'A':
 								if delta_x == 0:
@@ -697,9 +854,13 @@ for i in range(500000):
 		print(total_intcp)
 		mesh2 = mesh
 		outputter(mesh2)
+		print(" ")
+		print(Blocks(3,5))
+		(a,b) = Blocks(3,5).prop(mesh)
 		break
 
 #print("Running the outputter")
-
+if (a,b) == (True,True):
+	print("Boom")
 
 print("code finished running")
