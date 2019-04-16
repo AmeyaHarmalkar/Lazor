@@ -505,6 +505,39 @@ for i in range(1000):
 	if all(x in total_intcp for x in final_set) == True:
 		print("Yay")
 		print(total_intcp)
+# print mesh
+		# print len(mesh)
+		# print len(mesh[0])
+
+		solution = []
+
+		for i in range(1, len(mesh), 2):
+			for j in range(1, len(mesh), 2):
+				solution.append(mesh[i][j])
+
+		width = int((len(mesh[0])-1) * 0.5)
+
+		solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
+
+		# print solution
+
+		file = open('solution.bff', 'w')
+		for i in solution:
+			for j in i:
+				file.write(j)
+				file.write('\t')
+			file.write('\n')
+		file.close()
+				
+
+		#print(total_intcp)
 		break
+
+
+
+
+print("code finished running")
+
+
 
 #print(final_set)
