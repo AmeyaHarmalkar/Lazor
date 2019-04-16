@@ -22,6 +22,29 @@ class Game :
 
 
 	def database(self):
+		'''
+		This function takes in the input file and converts it into a format that will be used throughout the code.
+		
+		**Parameters**
+
+			none
+
+		**Returns**
+
+			grid : *list,lsit,str* 
+				A nested list of strings containing the description of the game board
+			lazor_start : *list,tuple* 
+				A list of tuples containing the origin data of lazor input.
+			lazor_path : *list,tuples* 
+				A list of tuples containing the path of the lazor .i.e. its direction.
+			pointer : *list,tuples* 
+				A list of tuples containing the position of the targets.
+			blocks : *dict* 
+				A dictionary with the types of blocks as keys and the number of blocks as values.
+
+		'''
+
+
 		all_lines = self.fptr.split('\n')
 		raw_data = []
 
@@ -29,13 +52,12 @@ class Game :
 		for line in all_lines:
 			if '#' not in line and line != '':
 				raw_data.append(line)
-		#print(raw_data)
-
 
 		# Split list into sublists to facilitate extraction of data into grid, blocks, laser, and destination points
 
-
-		## Generating the game grid
+		##############################
+		## Generating the game grid ##
+		##############################
 
 		grid_start = raw_data.index('GRID START')
 		grid_stop = raw_data.index('GRID STOP')
@@ -56,7 +78,9 @@ class Game :
 				raw_data.remove(line)
 
 
-		## Generating the Laser direction tuple 
+		##########################################
+		## Generating the Laser direction tuple ##
+		##########################################
 
 		self.lazor_start=[]
 		self.lazor_path=[]
@@ -115,18 +139,18 @@ class Game :
 
 class Board:
 	'''
-	The class to generate the baord game and all its various possibilities
+	The class to generate the board game .i.e to create the meshgrid
 	'''
 	
 	def __init__(self,grid,origin,path,sets):
-
+		'''
+		Just to assemble all the data, so that it can be called upon whenever.
+		'''
 		self.grid = grid
-
 		self.origin = origin
-
 		self.path = path
-
 		self.sets = sets
+
 
 	def sampler(self, grid):
 
@@ -192,6 +216,7 @@ class Blocks:
 	def __init__(self,x,y):
 		self.x = x
 		self.y = y
+
 	def prop(self, meshgrid):
 		'''
 		This function specifies the 'reflect' and 'transmit' properties as booleans
@@ -232,7 +257,7 @@ class Laser:
 	def pos_chk(x, y, nBlocks):
 		return x >= 0 and x < nBlocks and y >= 0 and y < nBlocks
 
-	def laser_strikes(path, intercepts, grid, meshgrid):
+	def laser_strikes(self, path, intercepts, grid, meshgrid, path_1, intercept_new):
 		'''
 		The function to predict where a lazor beam will strike. This is a function that will analyze at each point of the lazor
 		beam. It will check whether their are any block neighbours, what are the characteristics of those block neighbours and will
@@ -257,13 +282,16 @@ class Laser:
 
 			path, intercepts
 
-
-
 		'''
+		
 		(dx, dy) = path[-1]
 
 		# The last position of the laser
 		(nx, ny) = intercepts[-1]
+
+
+		# Directions to perform a check
+		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
 
 
 		# Creating a buffer to check the surrounding positions
@@ -289,23 +317,23 @@ class Laser:
 
 					if meshgrid[ey][ex] == 'A':
 
-						if delta_x == dx or delta_y == dy:
+						#if delta_x == dx or delta_y == dy:
 
-							if delta_x == 0:
-								new_dx = dx * 1
-							else:
-								new_dx = dx * -1
-							if delta_y == 0:
-								new_dy = dy * 1
-							else:
-								new_dy = dy * -1
-							nlist.append((new_dx,new_dy))
-
-						else:
-
+						if delta_x == 0:
 							new_dx = dx * 1
+						else:
+							new_dx = dx * -1
+						if delta_y == 0:
 							new_dy = dy * 1
-							nlist.append((new_dx,new_dy))
+						else:
+							new_dy = dy * -1
+						nlist.append((new_dx,new_dy))
+
+						#else:
+
+						#	new_dx = dx * 1
+						#	new_dy = dy * 1
+						#	nlist.append((new_dx,new_dy))
 
 
 					elif meshgrid[ey][ex] == 'B':
@@ -344,18 +372,26 @@ class Laser:
 
 
 			if len(nlist) > 0:
-							
+				# Needs a rectification here! Can't handle properly if there are 2 reflect blocks side-by-side.
 				path.append(nlist[-1])
 
 			else :
-				path[k].append((dx,dy))
+				path.append((dx,dy))
+
+			if len(transmit_list) > 0 :
+				path_1.append(transmit_list[-1])
+				intercept_new.append((nx,ny))
 
 			nx += path[-1][0]
 			ny += path[-1][1]
 
 			intercepts.append((nx,ny))
 
-		return path,intercepts
+		else :
+			path.append((dx,dy))
+			intercepts.append((nx,ny))
+
+		return path,intercepts, path_1, intercept_new
 
 
 	def trajectory(self, path, grid, meshgrid):
@@ -385,6 +421,12 @@ class Laser:
 
 			if len(intercepts[k]) == 1:
 
+				path[k], intercepts[k], path_1, intercept_new = self.laser_strikes(path[k], intercepts[k], grid, meshgrid, path_1, intercept_new)
+
+
+				###################################### ORIGINAL CODE HERE #####################################
+
+				'''
 				(dx, dy) = path[k][-1]
 
 				# The last position of the laser
@@ -482,13 +524,25 @@ class Laser:
 
 
 					intercepts[k].append((nx,ny))
+				'''
+				###################################### ORIGINAL CODE HERE #####################################
 
 
 			while intercepts[k][-1][0] != 0 and intercepts[k][-1][0] < len(meshgrid[0])-1 and intercepts[k][-1][1] != 0 and intercepts[k][-1][1] < len(meshgrid)-1:
 
+				
+				if path[k][-1] != (0,0) :
+
+					path[k], intercepts[k], path_1, intercept_new = self.laser_strikes(path[k], intercepts[k], grid, meshgrid, path_1, intercept_new)
+
+				else :
+					
+					break
+
 			# To ensure that the laser takes into account for multiple inputs .i.e. multiple sources of origin for the laser input. 
 
-			#for k in range(len(path)) :
+				###################################### ORIGINAL CODE HERE #####################################
+				'''
 				#The Directional path of the Laser beam
 				(dx, dy) = path[k][-1]
 
@@ -590,11 +644,9 @@ class Laser:
 					#print(path[k])
 					#print(intercepts[k])
 
-				#print(path[-1])
+				'''
+				###################################### ORIGINAL CODE HERE #####################################
 
-
-				else :
-					break
 
 
 				#################
@@ -612,8 +664,21 @@ class Laser:
 			if len(path_1) != 0:
 
 				#print(path_1)
+				path_0 = []
+				intercept_0 = []
 
 				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
+
+					if path_1[-1] == (0,0) :
+
+						path_1, intercept_new, path_0, intercept_0 = self.laser_strikes(path_1, intercept_new, grid, meshgrid, path_0, intercept_0)
+
+					else:
+						break
+
+
+			###################################### ORIGINAL CODE HERE #####################################
+			'''
 
 					(dx, dy) = path_1[-1]
 
@@ -692,6 +757,10 @@ class Laser:
 				#print(path[-1])
 				else :
 					break
+
+			'''
+
+			###################################### ORIGINAL CODE HERE #####################################		
 
 		# The output will be in a nested list format. We want it to be in list form. I am hereby converting the nested list
 		# into a list. This will be further useful as the testing function compares between 2 samples of list.
@@ -842,10 +911,12 @@ for i in range(500000):
 	#print(intcp)
 	#print(intercept_new)
 	#print(" ")
+	#print(mesh)
 	#print(total_intcp)
 	#print(" ")
 	#print(final_set)
 	#print("The solution is :")
+	#outputter(mesh)
 
 	if all(x in total_intcp for x in final_set) == True:
 		print("Yay")
@@ -856,9 +927,10 @@ for i in range(500000):
 		outputter(mesh2)
 		print(" ")
 		print(Blocks(3,5))
-		(a,b) = Blocks(3,5).prop(mesh)
+		
 		break
 
+(a,b) = Blocks(3,5).prop(mesh)
 #print("Running the outputter")
 if (a,b) == (True,True):
 	print("Boom")
