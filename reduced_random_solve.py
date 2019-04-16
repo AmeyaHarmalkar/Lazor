@@ -185,6 +185,102 @@ class Board:
 		return meshgrid
 
 
+	def Sys_Generator(net_grid, blocks, steps):
+
+		# Applying Method 2:
+
+		neighbor_direction = [(0 , 1), (0 , -1), (1, 0), (-1, 0)]
+		likely_pos_1stblock = []
+
+		for i in intcp:
+			for j in neighbor_direction:
+				each_pos_x = i[0] + j[0]
+				each_pos_y = i[1] + j[1]
+				each_pos = (each_pos_x, each_pos_y)
+
+				if each_pos not in likely_pos_1stblock:
+					likely_pos_1stblock.append(each_pos)
+
+					if each_pos not in all_block_pos: 
+						likely_pos_1stblock.pop()
+
+
+		nA = blocks['A']
+		nB = blocks['B']
+		nC = blocks['C']
+		ensemble = []
+
+		n_total = nA + nB + nC
+
+		count = 0
+
+		# likely_pos_1stblock is a list of "allowed" positions for the 1st block to be placed on grid
+		#print likely_pos_1stblock
+
+
+		for i in range(0,steps):
+
+			nA = blocks['A']
+			nB = blocks['B']
+			nC = blocks['C']
+			n_total = nA + nB + nC
+
+		
+			new_grid = []
+			block_index_list = []
+
+			rand_1st_block = random.sample(likely_pos_1stblock, 1)[0]
+			#print rand_1st_block
+
+			block_index = all_block_pos.index(rand_1st_block)
+
+
+			#block_index_list is a list of indexes of random block positions
+
+			block_index_list.append(block_index)
+
+			rand_i = random.sample(range(0,len(net_grid)), n_total - 1)
+			if block_index not in rand_i:
+				block_index_list.append(rand_i)
+
+
+				for j in range(len(net_grid)):
+					if net_grid[j] == 'o':
+						if j in block_index_list:
+							if nA > 0 and nC >0:
+								block_input = random.choice(['A', 'C'])
+								new_grid.append(block_input)
+								if block_input == 'A':
+									nA = nA - 1
+
+								if block_input == 'C':
+									nC = nC - 1
+
+							if nA > 0:
+								new_grid.append('A')
+								nA = nA - 1
+							if nA == 0 and nB >0:
+								new_grid.append('B')
+								nB = nB - 1
+
+							elif nA == 0 and nB == 0 and nC >0:
+								new_grid.append('C')
+								nC = nC - 1
+
+
+						else:
+							new_grid.append('o')
+
+					else:
+						new_grid.append(net_grid[j])
+
+					# print new_grid
+
+				ensemble.append(new_grid)
+
+		return ensemble
+
+
 class Blocks:
 	'''
 	This class defines the 'reflect' and 'transmit' properties for each position in the game board.
