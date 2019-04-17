@@ -1,5 +1,8 @@
 # Lazor
-# 1. Lazor Code
+# 1. Introduction
+# 2. Methodology
+# 3. Codes
+# 4. Branch organization
 
 import Lazor
 
