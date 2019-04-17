@@ -6,10 +6,10 @@ The goal of this group project is to create a universal cheat code for the Lazor
 ### 3. Codes
 ### 4. Branch organization
 ### Authors:
-Henry Herbol https://github.com/hherbol  
-Ameya Harmalkar https://github.com/AmeyaHarmalkar  
-Antonio Xu https://github.com/haonan-xu  
-Avery Tran https://github.com/AveryTran  
+Henry Herbol https://github.com/hherbol\
+Ameya Harmalkar https://github.com/AmeyaHarmalkar\
+Antonio Xu https://github.com/haonan-xu\
+Avery Tran https://github.com/AveryTran\
 
 import Lazor
 
