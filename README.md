@@ -1,5 +1,5 @@
 # Lazor
-# 1. Introduction
+## 1. Introduction
 # 2. Methodology
 # 3. Codes
 # 4. Branch organization
