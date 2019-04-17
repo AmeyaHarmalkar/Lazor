@@ -21,7 +21,8 @@ class Game :
 				The name of the input file
 
 		'''
-		self.fptr = open(filename, 'r').read()
+		with open(filename, 'r') as f:
+			self.fptr = f.read()
 
 
 	def database(self):
