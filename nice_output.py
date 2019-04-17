@@ -22,8 +22,6 @@ class Game :
 
 		'''
 		self.fptr = open(filename, 'r').read()
-		#with open(filename, 'r') as f:
-		#		self.fptr = f.read()
 
 
 	def database(self):
@@ -610,7 +608,7 @@ for i in range(500000):
 
 ## Outputs into a file
 
-for i in range(100000):
+for i in range(5000000):
 	G = Game('yarn_5.bff')
 	G.database()
 
@@ -741,5 +739,4 @@ class MyTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-
 	unittest.main()
