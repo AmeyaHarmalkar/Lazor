@@ -315,7 +315,11 @@ class Laser:
 					delta_x = ex-nx
 					delta_y = ey-ny
 
-					if meshgrid[ey][ex] == 'A':
+					#print(Blocks(ey,ex).prop(meshgrid))
+
+					if Blocks(ex,ey).prop(meshgrid) == (True,False) :
+						
+					#if meshgrid[ey][ex] == 'A':
 
 						if delta_x == dx or delta_y == dy:
 
@@ -336,7 +340,8 @@ class Laser:
 							nlist.append((new_dx,new_dy))
 
 
-					elif meshgrid[ey][ex] == 'B':
+					elif Blocks(ex,ey).prop(meshgrid) == (False,False) :
+					#elif meshgrid[ey][ex] == 'B':
 
 						if delta_x == dx or delta_y == dy:
 							new_dx = dx * 0
@@ -347,7 +352,8 @@ class Laser:
 						nlist.append((new_dx,new_dy))
 
 
-					elif meshgrid[ey][ex] == 'C':
+					elif Blocks(ex,ey).prop(meshgrid) == (True,True) :
+					#elif meshgrid[ey][ex] == 'C':
 
 						if delta_x == dx or delta_y == dy:
 
@@ -599,8 +605,8 @@ for i in range(500000):
 
 ## Outputs into a file
 
-for i in range(500000):
-	G = Game('mad_7.bff')
+for i in range(100000):
+	G = Game('mad_4.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
