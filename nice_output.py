@@ -1,4 +1,7 @@
 import random
+import unittest
+
+
 
 
 class Game :
@@ -606,7 +609,7 @@ for i in range(500000):
 ## Outputs into a file
 
 for i in range(100000):
-	G = Game('mad_4.bff')
+	G = Game('dark_1.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
@@ -652,3 +655,63 @@ if (a,b) == (True,True):
 	print("Boom")
 
 print("code finished running")
+
+
+
+
+
+##########################################################################
+##							UNIT TEST 									##
+##########################################################################
+
+
+
+class MyTest(unittest.TestCase):
+
+	def test_game1(self):
+		G1 = Game('dark_1.bff')
+		G1.database()
+		self.assertEqual(G1.grid, [['x', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'x']])
+		self.assertEqual(G1.lazor_path, [(-1, 1), (1, -1), (-1, -1), (1, -1)])
+
+	def test_game2(self):
+		G2 = Game('tiny_5.bff')
+		G2.database()
+		self.assertEqual(G2.blocks, {'A': 3, 'C': 1, 'B': 0})
+		self.assertEqual(G2.pointer, [(1, 2), (6, 3)])
+
+	def test_game3(self):
+		G3 = Game('yarn_5.bff')
+		G3.database()
+		self.assertEqual(G3.lazor_start, [(4, 1)])
+		self.assertEqual(G3.grid, [['o', 'B', 'x', 'o', 'o'], ['o', 'o', 'o', 'o', 'o'], ['o', 'x', 'o', 'o', 'o'], ['o', 'x', 'o', 'o', 'x'], ['o', 'o', 'x', 'x', 'o'], ['B', 'o', 'x', 'o', 'o']])
+
+	def test_sampler(self):
+		G = Game('mad_4.bff')
+		G.database()
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+		self.assertEqual(B.sampler(G.grid), [(0, 0), (1, 0), (2, 0), (3, 0), (0, 1), (1, 1), (2, 1), (3, 1), (0, 2), (1, 2), (2, 2), (3, 2), (0, 3), (1, 3), (2, 3), (3, 3), (0, 4), (1, 4), (2, 4), (3, 4)])
+
+	def test_blocks_1(self):
+		G = Game('tiny_5.bff')
+		G.database()
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+		mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+		mesh = B.make_board(mesh_board)
+		(a,b) = Blocks(3,1).prop(mesh)
+		self.assertFalse(a)
+		self.assertFalse(b)
+
+	def test_blocks_2(self):
+		G = Game('yarn_5.bff')
+		G.database()
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+		mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+		mesh = B.make_board(mesh_board)
+		(a,b) = Blocks(1,11).prop(mesh)
+		self.assertFalse(a)
+		self.assertFalse(b)
+
+
+if __name__ == '__main__':
+	unittest.main()
