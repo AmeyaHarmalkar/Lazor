@@ -387,9 +387,6 @@ class Laser:
 
 			intercepts.append((nx,ny))
 
-		else :
-			path.append((dx,dy))
-			intercepts.append((nx,ny))
 
 		return path,intercepts, path_1, intercept_new
 
@@ -419,114 +416,14 @@ class Laser:
 		
 		for k in range(len(path)) :
 
+			# Perform an initial check at the input position to ensure that if there is a block in the neighbour domain of the
+			# origin source, the direction of the laser will change right away.
+
 			if len(intercepts[k]) == 1:
 
 				path[k], intercepts[k], path_1, intercept_new = self.laser_strikes(path[k], intercepts[k], grid, meshgrid, path_1, intercept_new)
 
-
-				###################################### ORIGINAL CODE HERE #####################################
-
-				'''
-				(dx, dy) = path[k][-1]
-
-				# The last position of the laser
-				(nx, ny) = intercepts[k][-1]
-
-				# Finding the next point 
-
-				#nx = cx 
-				#ny = cy 
-
-				#print((nx,ny))
-
-				#intercepts[k].append((nx,ny))
-
-				# Creating a buffer to check the surrounding positions
-
-				nlist = []
-				transmit_list = []
-
-				# Exploring the neighbours of the new point to modify directions
-
-				if (dx,dy) != (0,0):
-
-				#This will allow the loop to proceed only if there is a viable direction to proceed	
-
-					for i in range(len(n_direct)):
-
-						ex = nx + n_direct[i][0]
-						ey = ny + n_direct[i][1]
-
-						if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
-							#Just to perform a check that we are still within the grid
-							delta_x = ex-nx
-							delta_y = ey-ny
-
-
-							if meshgrid[ey][ex] == 'A':
-								if delta_x == 0:
-									new_dx = dx * 1
-								else:
-									new_dx = dx * -1
-								if delta_y == 0:
-									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
-								nlist.append((new_dx,new_dy))
-
-
-							elif meshgrid[ey][ex] == 'B':
-								if delta_x == dx or delta_y == dy:
-									new_dx = dx * 0
-									new_dy = dy * 0
-								else :
-									new_dx = dx * 1
-									new_dy = dy * 1
-								nlist.append((new_dx,new_dy))
-
-
-							elif meshgrid[ey][ex] == 'C':
-								if delta_x == dx or delta_y == dy:
-
-									if delta_x == 0:
-										new_dx = dx * 1
-									else:
-										new_dx = dx * -1
-									if delta_y == 0:
-										new_dy = dy * 1
-									else:
-										new_dy = dy * -1
-									old_dx = dx
-									old_dy = dy
-									transmit_list.append((old_dx,old_dy))
-									nlist.append((new_dx,new_dy))
-								else:
-									new_dx = dx * 1
-									new_dy = dy * 1
-									nlist.append((new_dx,new_dy))
-
-
-
-					if len(nlist) > 0:
-						path[k].append(nlist[-1])
-
-					else :
-						path[k].append((dx,dy))
-
-					if len(transmit_list) > 0 :
-						path_1.append(transmit_list[-1])
-						intercept_new.append((nx,ny))
-
-					#print(path[k][-1])
-
-					nx += path[k][-1][0]
-					ny += path[k][-1][1]
-
-
-					intercepts[k].append((nx,ny))
-				'''
-				###################################### ORIGINAL CODE HERE #####################################
-
+			# To continue the loop till the laser reaches the boundary of the grid.
 
 			while intercepts[k][-1][0] != 0 and intercepts[k][-1][0] < len(meshgrid[0])-1 and intercepts[k][-1][1] != 0 and intercepts[k][-1][1] < len(meshgrid)-1:
 
@@ -539,228 +436,38 @@ class Laser:
 					
 					break
 
-			# To ensure that the laser takes into account for multiple inputs .i.e. multiple sources of origin for the laser input. 
 
-				###################################### ORIGINAL CODE HERE #####################################
-				'''
-				#The Directional path of the Laser beam
-				(dx, dy) = path[k][-1]
-
-				# The last position of the laser
-				(nx, ny) = intercepts[k][-1]
-
-				# Finding the next point 
-
-				#nx = cx 
-				#ny = cy 
-
-				#print((nx,ny))
-
-				#intercepts[k].append((nx,ny))
-
-				# Creating a buffer to check the surrounding positions
-
-				nlist = []
-				transmit_list = []
-
-				# Exploring the neighbours of the new point to modify directions
-
-				if (dx,dy) != (0,0):
-
-				#This will allow the loop to proceed only if there is a viable direction to proceed	
-
-					for i in range(len(n_direct)):
-
-						ex = nx + n_direct[i][0]
-						ey = ny + n_direct[i][1]
-
-						if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
-							#Just to perform a check that we are still within the grid
-							delta_x = ex-nx
-							delta_y = ey-ny
-
-							if meshgrid[ey][ex] == 'A':
-								if delta_x == 0:
-									new_dx = dx * 1
-								else:
-									new_dx = dx * -1
-								if delta_y == 0:
-									new_dy = dy * 1
-								else:
-									new_dy = dy * -1
-								nlist.append((new_dx,new_dy))
-
-
-							elif meshgrid[ey][ex] == 'B':
-								if delta_x == dx or delta_y == dy:
-									new_dx = dx * 0
-									new_dy = dy * 0
-								else :
-									new_dx = dx * 1
-									new_dy = dy * 1
-								nlist.append((new_dx,new_dy))
-
-
-							elif meshgrid[ey][ex] == 'C':
-								if delta_x == dx or delta_y == dy:
-
-									if delta_x == 0:
-										new_dx = dx * 1
-									else:
-										new_dx = dx * -1
-									if delta_y == 0:
-										new_dy = dy * 1
-									else:
-										new_dy = dy * -1
-									old_dx = dx
-									old_dy = dy
-									transmit_list.append((old_dx,old_dy))
-									nlist.append((new_dx,new_dy))
-
-								else:
-
-									new_dx = dx * 1
-									new_dy = dy * 1
-									nlist.append((new_dx,new_dy))
-
-
-					if len(nlist) > 0:
-						path[k].append(nlist[-1])
-
-					else :
-						path[k].append((dx,dy))
-
-					if len(transmit_list) > 0 :
-						path_1.append(transmit_list[-1])
-						intercept_new.append((nx,ny))
-
-					#print(path[k][-1])
-
-					nx += path[k][-1][0]
-					ny += path[k][-1][1]
-
-					intercepts[k].append((nx,ny))
-
-					#print(path[k])
-					#print(intercepts[k])
-
-				'''
-				###################################### ORIGINAL CODE HERE #####################################
-
-
-
-				#################
-
-				#print("Transmit List:", transmit_list)
-				#print("New Intercept", intercept_new)
-
-				#################
-
-
-			# To check whether if the Laser falls on any refract block, as it will have an altered path later on. 
-			# The next if code will allow to explore an additional path with the origin of the laser instantiated at the point of the
-			# split
+			# To check whether if the Laser falls on any refract block, as it will split on collision and have 2 paths later on. 
+			# The next 'if' conditional will allow to explore an additional path with the origin of the laser instantiated at the point 
+			# of the split. It utilizes the function laser_strikes to explore the transmit path, considering that the split 
+			# interface is now the origin
 
 			if len(path_1) != 0:
 
+				
 				#print(path_1)
 				path_0 = []
 				intercept_0 = []
+				
+				(dx,dy) = path_1[-1]
+				(cx, cy) = intercept_new[-1]
 
+				nx = cx + dx
+				ny = cy + dy
+
+				intercept_new.append((nx,ny))
+				
 				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
+					
 
-					if path_1[-1] == (0,0) :
+
+					if path_1[-1] != (0,0) :
 
 						path_1, intercept_new, path_0, intercept_0 = self.laser_strikes(path_1, intercept_new, grid, meshgrid, path_0, intercept_0)
 
 					else:
 						break
 
-
-			###################################### ORIGINAL CODE HERE #####################################
-			'''
-
-					(dx, dy) = path_1[-1]
-
-				# The last position of the laser
-					(nx, ny) = intercept_new[-1]
-
-				# Finding the next point 
-
-				#print((nx,ny))
-
-
-				# Creating a buffer to check the surrounding positions
-
-					nlist = []
-					transmit_list = []
-
-				# Exploring the neighbours of the new point to modify directions
-
-					if (dx,dy) != (0,0):
-
-				#This will allow the loop to proceed only if there is a viable direction to proceed	
-
-						for i in range(len(n_direct)):
-							ex = nx + n_direct[i][0]
-							ey = ny + n_direct[i][1]
-
-							if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
-									#Just to perform a check that we are still within the grid
-								delta_x = ex-nx
-								delta_y = ey-ny
-
-								if meshgrid[ey][ex] == 'A':
-									if delta_x == 0:
-										new_dx = dx * 1
-									else:
-										new_dx = dx * -1
-									if delta_y == 0:
-										new_dy = dy * 1
-									else:
-										new_dy = dy * -1
-									nlist.append((new_dx,new_dy))
-
-
-								elif meshgrid[ey][ex] == 'B':
-									new_dx = dx * 0
-									new_dy = dy * 0
-									nlist.append((new_dx,new_dy))
-
-
-								elif meshgrid[ey][ex] == 'C':
-									if delta_x == 0:
-										new_dx = dx * 1
-									else:
-										new_dx = dx * -1
-									if delta_y == 0:
-										new_dy = dy * 1
-									else:
-										new_dy = dy * -1
-									old_dx = dx
-									old_dy = dy
-									transmit_list.append((old_dx,old_dy))
-									nlist.append((new_dx,new_dy))
-
-
-						if len(nlist) > 0:
-							path[k].append(nlist[-1])
-
-						else :
-							path[k].append((dx,dy))
-
-						nx += path_1[-1][0]
-						ny += path_1[-1][1]
-
-						intercept_new.append((nx,ny))
-
-				#print(path[-1])
-				else :
-					break
-
-			'''
-
-			###################################### ORIGINAL CODE HERE #####################################		
 
 		# The output will be in a nested list format. We want it to be in list form. I am hereby converting the nested list
 		# into a list. This will be further useful as the testing function compares between 2 samples of list.
@@ -772,6 +479,9 @@ class Laser:
 
 
 		return final_intercept_list, path, intercept_new
+
+
+
 
 
 # Define a global function to solve the mesh
@@ -890,7 +600,7 @@ for i in range(500000):
 ## Outputs into a file
 
 for i in range(500000):
-	G = Game('tiny_5.bff')
+	G = Game('dark_1.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
