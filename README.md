@@ -29,22 +29,17 @@ In each iteration, random blocks are chosen and placed in random positions on th
 The solution is written in grid form (similar to input) in **solution.bff**.
 ### 3. Codes
 Code is written using *Object-oriented Programming*. 4 class objects have been created:
-* Game: import and parse data from .bff input file
+* Game: import and parse data from .bff input file<br/>
   All data are parsed into lists of lists. Coordinates are converted to integers.
-* Board: generate a new, more detailed grid for object placement and manipulation using information
+* Board: generate a new, more detailed grid for object placement and manipulation using information<br/>
   Coordinate system (*tuple*) starts at (0,0) in the top left corner. Each block pieces are 2 x 2 in the new grid and are placed in positions with odd coordinates. 
-* Blocks: define properties of the 3 types of blocks
-* Laser: algorithm for the game solver
-
-### 4. Branch organization
+* Blocks: define properties of the 3 types of blocks with boolean
+* Laser: algorithm for the game solver<br/>
+At each position the laser passes through, a neighbor check is performed to determine if a block is in the immediate horizontal or vertical vicinity, which means that the laser just hits the edge of a block. The type of the block determines new laser paths.
+### 4. File organization
+Codes were written in .py modules and assembled into a final .py file named **nice_output.py**. 
 ### Authors:
 Henry Herbol https://github.com/hherbol<br/>
 Ameya Harmalkar https://github.com/AmeyaHarmalkar<br/>
 Antonio Xu https://github.com/haonan-xu<br/>
 Avery Tran https://github.com/AveryTran<br/>
-
-import Lazor
-
-
-if __name__ = __main__:
-  lazor.run()
