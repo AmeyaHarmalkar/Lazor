@@ -22,6 +22,8 @@ class Game :
 
 		'''
 		self.fptr = open(filename, 'r').read()
+		#with open(filename, 'r') as f:
+		#		self.fptr = f.read()
 
 
 	def database(self):
@@ -320,27 +322,27 @@ class Laser:
 
 					#print(Blocks(ey,ex).prop(meshgrid))
 
-					if Blocks(ex,ey).prop(meshgrid) == (True,False) :
+					#if Blocks(ex,ey).prop(meshgrid) == (True,False) :
 						
-					#if meshgrid[ey][ex] == 'A':
+					if meshgrid[ey][ex] == 'A':
 
-						if delta_x == dx or delta_y == dy:
+						#if delta_x == dx or delta_y == dy:
 
-							if delta_x == 0:
-								new_dx = dx * 1
-							else:
-								new_dx = dx * -1
-							if delta_y == 0:
-								new_dy = dy * 1
-							else:
-								new_dy = dy * -1
-							nlist.append((new_dx,new_dy))
-
-						else:
-
+						if delta_x == 0:
 							new_dx = dx * 1
+						else:
+							new_dx = dx * -1
+						if delta_y == 0:
 							new_dy = dy * 1
-							nlist.append((new_dx,new_dy))
+						else:
+							new_dy = dy * -1
+						nlist.append((new_dx,new_dy))
+
+						#else:
+
+						#	new_dx = dx * 1
+						#	new_dy = dy * 1
+						#	nlist.append((new_dx,new_dy))
 
 
 					elif Blocks(ex,ey).prop(meshgrid) == (False,False) :
@@ -609,7 +611,7 @@ for i in range(500000):
 ## Outputs into a file
 
 for i in range(100000):
-	G = Game('dark_1.bff')
+	G = Game('yarn_5.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
@@ -712,6 +714,32 @@ class MyTest(unittest.TestCase):
 		self.assertFalse(a)
 		self.assertFalse(b)
 
+	def test_lazer1(self):
+		G = Game('unit_test_sample.bff')
+		G.database()
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+		mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+		mesh = B.make_board(mesh_board)
+		L = Laser(G.lazor_start,G.lazor_path)
+		intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
+		self.assertEqual(intcp, [(7, 2), (6, 1), (5, 0)])
+		self.assertEqual(intercept_new, [(7, 2), (6, 3), (5, 4), (4, 3), (3, 2), (2, 1), (1, 0)])
+		self.assertEqual(pth, [[(-1, 1), (-1, -1), (-1, -1)]])
+
+	def test_lazer2(self):
+		G = Game('unit_test_sample.bff')
+		G.database()
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+		mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+		mesh = B.make_board(mesh_board)
+		L = Laser(G.lazor_start,G.lazor_path)
+		intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
+		total_intcp = intcp + intercept_new
+		final_set = G.pointer
+		self.assertTrue(all(x in total_intcp for x in final_set))
+
+
 
 if __name__ == '__main__':
+
 	unittest.main()
