@@ -7,7 +7,7 @@
 
 In the base free game, only 3 hints are provided. The objective of this group project is to create a universal solver for *Lazor*.
 ### 2. Methodology
-#### 1. Input
+####   1. Input
 The input file .bff contains the following information: starting layout of the game grid, types and quantities of available blocks, laser sources and paths, and intercept positions.<br/>
 x = no block allowed<br/>
 o = blocks allowed<br/>
@@ -17,15 +17,15 @@ C = fixed refract block<br/>
 
 Axes defining block, laser and intercept positioning are as followed:<br/>
       __________\ +x<br/>
-      |         /<br/>
+      |         / <br/>
       |<br/>
       |<br/>
       |<br/>
      \|/ +y<br/>
 
-#### 2. Solver
+####   2. Solver
 In each iteration, random blocks are chosen and placed in random positions on the board. If the laser hits the edge of a block, depending on the block type and position relative of the laser trajectory, laser is reflected, transmitted, both, or stopped. A maximum number of iterations is provided to prevent indefinite calculations in case a solution takes too long or could not be found.
-#### 3. Output
+####   3. Output
 The solution is written in grid form (similar to input) in **solution.bff**.
 ### 3. Codes
 Code is written using *Object-oriented Programming*. 4 class objects have been created:
