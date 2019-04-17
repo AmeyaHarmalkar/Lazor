@@ -317,23 +317,23 @@ class Laser:
 
 					if meshgrid[ey][ex] == 'A':
 
-						#if delta_x == dx or delta_y == dy:
+						if delta_x == dx or delta_y == dy:
 
-						if delta_x == 0:
+							if delta_x == 0:
+								new_dx = dx * 1
+							else:
+								new_dx = dx * -1
+							if delta_y == 0:
+								new_dy = dy * 1
+							else:
+								new_dy = dy * -1
+							nlist.append((new_dx,new_dy))
+
+						else:
+
 							new_dx = dx * 1
-						else:
-							new_dx = dx * -1
-						if delta_y == 0:
 							new_dy = dy * 1
-						else:
-							new_dy = dy * -1
-						nlist.append((new_dx,new_dy))
-
-						#else:
-
-						#	new_dx = dx * 1
-						#	new_dy = dy * 1
-						#	nlist.append((new_dx,new_dy))
+							nlist.append((new_dx,new_dy))
 
 
 					elif meshgrid[ey][ex] == 'B':
@@ -600,7 +600,7 @@ for i in range(500000):
 ## Outputs into a file
 
 for i in range(500000):
-	G = Game('dark_1.bff')
+	G = Game('mad_7.bff')
 	G.database()
 
 	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
