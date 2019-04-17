@@ -27,7 +27,7 @@ In each iteration, random blocks are chosen and placed in random positions on th
   ##### 3. Output
 The solution is written in grid form (similar to input) in **solution.bff**.
 ### 3. Codes
-Code is written using *Object-oriented Programming*. 4 class objects have been created:
+Code is written using *Object-oriented Programming*. 5 class objects have been created:
 * Game: import and parse data from .bff input file<br/>
   All data are parsed into lists of lists. Coordinates are converted to integers.
 * Board: generate a new, more detailed grid for object placement and manipulation using information<br/>
@@ -35,8 +35,12 @@ Code is written using *Object-oriented Programming*. 4 class objects have been c
 * Blocks: define properties of the 3 types of blocks with boolean
 * Laser: algorithm for the game solver<br/>
 At each position the laser passes through, a neighbor check is performed to determine if a block is in the immediate horizontal or vertical vicinity, which means that the laser just hits the edge of a block. The type of the block determines new laser paths.
+* MyTest: unit test codes for various functions and components to ensure code functionality and facilitate debugging.
+
+To solve for different levels, simply change the filename to something else at:
+```G = Game('mad_1.bff')```
 ### 4. File organization
-Codes were written in .py modules and assembled into a final .py file named **nice_output.py**. 
+Codes were written in parts and assembled into a final file **nice_output.py**. 
 ### Authors:
 Henry Herbol https://github.com/hherbol<br/>
 Ameya Harmalkar https://github.com/AmeyaHarmalkar<br/>
