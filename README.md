@@ -1,5 +1,5 @@
 # Lazor
-# Lazor Code
+# 1. Lazor Code
 
 import Lazor
 
