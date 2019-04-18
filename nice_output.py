@@ -605,7 +605,6 @@ class MyTest(unittest.TestCase):
 
 
 
-# Define a global function to solve the mesh
 
 def outputter(mesh):
 
