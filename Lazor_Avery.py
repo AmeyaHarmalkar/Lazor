@@ -18,6 +18,10 @@ def data(filename):
 			raw_data.append(line)
 
 	# Split list into sublists to facilitate extraction of data into grid, blocks, laser, and destination points
+	#####
+	##   Why do we have setup here? We don't need it
+	#####
+
 	setup = fptr.split('\n')[9:]
 	grid_start = raw_data.index('GRID START')
 	grid_stop = raw_data.index('GRID STOP')

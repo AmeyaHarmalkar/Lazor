@@ -148,7 +148,7 @@ class Board:
 
 
 if __name__ == "__main__":
-	G = Game('mad_7.bff')
+	G = Game('yarn_5.bff')
 	G.database()
 
 	print('Grid =', G.grid)
