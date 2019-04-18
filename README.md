@@ -44,5 +44,5 @@ Codes were written in parts and assembled into a final file **nice_output.py**.
 ### Authors:
 Henry Herbol https://github.com/hherbol<br/>
 Ameya Harmalkar https://github.com/AmeyaHarmalkar<br/>
-Antonio Xu https://github.com/haonan-xu<br/>
+Haonan Xu https://github.com/haonan-xu<br/>
 Avery Tran https://github.com/AveryTran<br/>
