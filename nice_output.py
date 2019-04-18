@@ -23,9 +23,11 @@ Output:
 
 
 
-
 import random
+
+# "unittest" module is self contained in this script
 import unittest
+
 
 
 
@@ -41,7 +43,7 @@ class Game:
 	def __init__(self, filename):
 
 		'''
-		This is just an initialization function to enter the file into the system.
+		This lines initiate the function to enter the file into the system.
 
 		**Parameters**
 
@@ -171,15 +173,19 @@ class Game:
 class Board:
 
 	'''
-	The class to generate the board game .i.e to create the meshgrid
-	
+	Board class generates indiviual permutations of how game can be played.
+	It first generates the grid space for blocks (coarse grid named "grid") and lasers
+	(fine grid named "meshgrid"), then the random positions for the given blocks. 
+
+	The Board class depends on the Block class for game piece input (type and number of blocks) 
+
 	'''
 	
 	def __init__(self,grid,origin,path,sets):
 
-		'''
-		Just to assemble all the data, so that it can be called upon whenever.
-		'''
+	
+		# The following lines initiate the callable inputs.
+		
 		self.grid = grid
 		self.origin = origin
 		self.path = path
@@ -187,6 +193,11 @@ class Board:
 
 
 	def sampler(self, grid):
+
+		'''
+		The sampler function generates a list of tuples of coordinates for allowed block positions
+
+		'''
 
 		sample_space = []
 
@@ -199,14 +210,22 @@ class Board:
 
 	def sample_board(self, sample_space, blocks, grid):
 
+		'''
+		The sample_board function generates a single permutation of how a set of 
+		given blocks can be arranged on the game grid.
+
+		'''
+
 		options = random.sample(sample_space, sum(blocks.values()))
 		nA = blocks['A']
 		nB = blocks['B']
 		nC = blocks['C']
 
 
-		# Orderly insertion of the 3 blocks. First inserts the C blocks, then the A blocks and then the B blocks.
-		# This order would allow more robust solving, since C genearates more laser path than A than B
+		# The following lines orderly insert the 3 blocks. 
+		# Firstly, C blocks is inserted (if available), then the A blocks, and then the B blocks.
+		# This order would allow more robust solving, since C genearates more laser path than A and,
+		# therefore increase the rate of occurrence of randomly hitting the solution 
 
 		for element in options:
 			(i,j) = element
@@ -224,14 +243,15 @@ class Board:
 						grid[j][i] = 'B'
 						nB = nB-1
 					else:
-						print("Some error")
+						print("Error: No block given")
 		return grid
 
 	def make_board(self,grid):
 
 		'''
-		The function to make the actual board through which the laser can parse through. It converts the sample_board of 
-		dimension (i*j) to a board of dimensions (2i+1)*(2j+1). This is important as the lazor passes through the midpoints
+		The make_board function generates the fine grid through which the laser can parse through. 
+		It converts the sample_board of dimension (i*j) to a board of dimensions (2i+1)*(2j+1). 
+		This is important as the lazor passes through the midpoints, where the targets are placed. 
 
 		'''
 
@@ -648,7 +668,7 @@ if __name__ == '__main__':
 
 	
 
-	solution_generator('yarn_5.bff', 500000)
+	solution_generator('tiny_5.bff', 500000)
 	
 
 
