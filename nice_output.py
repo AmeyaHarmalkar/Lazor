@@ -1,10 +1,37 @@
+'''
+Lazor Project: iterative Lazor game solution generator
+Authors: Ameya Harmalkar, Thu Tran, Haonan Xu
+
+Last Modified: 17 Apr, 2019
+
+In this script, we take the given input of Lazor game spec file in the format of ".bff", using a randomly iterative 
+appraoch to solve the game, and output a solution file in a similar format comparing to the input.  
+
+Input:
+	
+Solver:
+
+Output:
+
+
+
+
+
+
+'''
+
+
+
+
+
 import random
 import unittest
 
 
 
 
-class Game :
+class Game:
+
 	'''
 	This is the game grid. We have made this section to read user input, format and output it as per our
 	requirements, to determine all the possible different combinations of boards we can make and run 
@@ -12,6 +39,7 @@ class Game :
 	'''
 
 	def __init__(self, filename):
+
 		'''
 		This is just an initialization function to enter the file into the system.
 
@@ -25,6 +53,7 @@ class Game :
 
 
 	def database(self):
+
 		'''
 		This function takes in the input file and converts it into a format that will be used throughout the code.
 		
@@ -46,7 +75,6 @@ class Game :
 				A dictionary with the types of blocks as keys and the number of blocks as values.
 
 		'''
-
 
 		all_lines = self.fptr.split('\n')
 		raw_data = []
@@ -141,11 +169,14 @@ class Game :
 
 
 class Board:
+
 	'''
 	The class to generate the board game .i.e to create the meshgrid
+	
 	'''
 	
 	def __init__(self,grid,origin,path,sets):
+
 		'''
 		Just to assemble all the data, so that it can be called upon whenever.
 		'''
@@ -175,7 +206,7 @@ class Board:
 
 
 		# Orderly insertion of the 3 blocks. First inserts the C blocks, then the A blocks and then the B blocks.
-		# Would be more fun to randomly insert any block whatsoever.
+		# This order would allow more robust solving, since C genearates more laser path than A than B
 
 		for element in options:
 			(i,j) = element
@@ -197,6 +228,7 @@ class Board:
 		return grid
 
 	def make_board(self,grid):
+
 		'''
 		The function to make the actual board through which the laser can parse through. It converts the sample_board of 
 		dimension (i*j) to a board of dimensions (2i+1)*(2j+1). This is important as the lazor passes through the midpoints
@@ -324,8 +356,6 @@ class Laser:
 						
 					if meshgrid[ey][ex] == 'A':
 
-						#if delta_x == dx or delta_y == dy:
-
 						if delta_x == 0:
 							new_dx = dx * 1
 						else:
@@ -335,12 +365,6 @@ class Laser:
 						else:
 							new_dy = dy * -1
 						nlist.append((new_dx,new_dy))
-
-						#else:
-
-						#	new_dx = dx * 1
-						#	new_dy = dy * 1
-						#	nlist.append((new_dx,new_dy))
 
 
 					elif Blocks(ex,ey).prop(meshgrid) == (False,False) :
@@ -469,7 +493,6 @@ class Laser:
 				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
 					
 
-
 					if path_1[-1] != (0,0) :
 
 						path_1, intercept_new, path_0, intercept_0 = self.laser_strikes(path_1, intercept_new, grid, meshgrid, path_0, intercept_0)
@@ -485,184 +508,8 @@ class Laser:
 			for item in sublist:
 				final_intercept_list.append(item)
 
-
-
 		return final_intercept_list, path, intercept_new
 
-
-
-
-
-# Define a global function to solve the mesh
-
-def outputter(mesh):
-
-	print("Analyzing and preparing files for output...")
-
-	solution = []
-
-	for j in range(1,len(mesh), 2):
-		for i in range(1, len(mesh[0]), 2):
-			solution.append(mesh[j][i])
-
-	width = int((len(mesh[0])-1) * 0.5)
-
-	solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
-
-	file = open('solution.bff', 'w')
-
-	for i in solution:
-		for j in i:
-			file.write(j)
-			file.write('\t')
-		file.write('\n')
-	file.close()
-
-	print("Solution found!")
-
-
-
-
-'''
-if __name__ == "__main__":
-	G = Game('mad_1.bff')
-	G.database()
-
-	#print('Grid =', G.grid)
-	#print('Blocks =', G.blocks)
-	#print('Laser path =', G.lazor_path)
-	#print('Lazer initial =', G.lazor_start)
-	#print('Point sets =', G.pointer)
-
-
-	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
-
-	mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
-
-	#mesh = B.make_board(G.grid)
-
-	#print(mesh)
-
-	intercepts = []
-	track = []
-
-	for i in range(len(G.lazor_start)):
-		intercepts.append([G.lazor_start[i]])
-		track.append([G.lazor_path[i]])
-
-
-	L = Laser(G.lazor_start,G.lazor_path)
-	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
-
-	#final_set = G.pointer
-
-	#print(intcp)
-	#print(intercept_new)
-	#print(pth)
-
-	#print(intercept_new)
-
-	#total_intcp = intcp+intercept_new
-	#print(total_intcp)
-
-	#print(all(x in total_intcp for x in final_set))
-
-###################################
-	#print(B.sampler(G.grid))
-	#print(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
-
-
-
-for i in range(500000):
-	G = Game('showstopper_4.bff')
-	G.database()
-
-	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
-
-	mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
-
-	#print(mesh)
-
-	L = Laser(G.lazor_start,G.lazor_path)
-	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
-	final_set = G.pointer
-	total_intcp = intcp+intercept_new
-	##########
-	#print(intcp)
-	#print(intercept_new)
-	#print(" ")
-	#print(total_intcp)
-	#print(" ")
-	#print(final_set)
-	#print("The solution is :")
-
-	if all(x in total_intcp for x in final_set) == True:
-		print("Yay")
-		print(total_intcp)
-		break
-
-#print(final_set)
-
-
-'''
-
-## Outputs into a file
-
-for i in range(5000000):
-	G = Game('yarn_5.bff')
-	G.database()
-
-	B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
-
-	mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
-
-	mesh = B.make_board(mesh_board)
-
-	#mesh = B.make_board(B.sample_board(B.sampler(G.grid), G.blocks, G.grid))
-
-	#print(mesh)
-
-	L = Laser(G.lazor_start,G.lazor_path)
-	intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
-	final_set = G.pointer
-	total_intcp = intcp+intercept_new
-	##########
-	#print(intcp)
-	#print(intercept_new)
-	#print(" ")
-	#print(mesh)
-	#print(total_intcp)
-	#print(" ")
-	#print(final_set)
-	#print("The solution is :")
-	#outputter(mesh)
-
-	if all(x in total_intcp for x in final_set) == True:
-		print("Yay")
-		print(intcp)
-		print(intercept_new)
-		print(total_intcp)
-		mesh2 = mesh
-		outputter(mesh2)
-		print(" ")
-		print(Blocks(3,5))
-		
-		break
-
-(a,b) = Blocks(3,5).prop(mesh)
-#print("Running the outputter")
-if (a,b) == (True,True):
-	print("Boom")
-
-print("code finished running")
-
-
-
-
-
-##########################################################################
-##							UNIT TEST 									##
-##########################################################################
 
 
 
@@ -738,5 +585,76 @@ class MyTest(unittest.TestCase):
 
 
 
+# Define a global function to solve the mesh
+
+def outputter(mesh):
+
+	print("Analyzing and preparing files for output...")
+
+	solution = []
+
+	for j in range(1,len(mesh), 2):
+		for i in range(1, len(mesh[0]), 2):
+			solution.append(mesh[j][i])
+
+	width = int((len(mesh[0])-1) * 0.5)
+
+	solution = [solution[x:x+width] for x in xrange(0, len(solution), width)]
+
+	file = open('solution.bff', 'w')
+
+	for i in solution:
+		for j in i:
+			file.write(j)
+			file.write('\t')
+		file.write('\n')
+	file.close()
+
+	print("Solution found!")
+
+
+def solution_generator(game, maxiter):
+
+	for i in range(maxiter):
+		G = Game(game)
+		G.database()
+
+		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
+
+		mesh_board = B.sample_board(B.sampler(G.grid), G.blocks, G.grid)
+
+		mesh = B.make_board(mesh_board)
+
+		L = Laser(G.lazor_start,G.lazor_path)
+		intcp, pth, intercept_new = L.trajectory(G.lazor_path,G.grid, mesh)
+		final_set = G.pointer
+		total_intcp = intcp+intercept_new
+
+
+		if all(x in total_intcp for x in final_set) == True:
+
+			outputter(mesh)
+
+			
+			break
+
+	if not all(x in total_intcp for x in final_set) == True:
+
+		print('Max iteration allowance reached: no solution found')
+
+
+
 if __name__ == '__main__':
+
+	
+
+	solution_generator('yarn_5.bff', 500000)
+	
+
+
+	# The following line performs unit tests
 	unittest.main()
+
+
+
+
