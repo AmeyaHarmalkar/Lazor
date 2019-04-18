@@ -40,7 +40,7 @@ At each position the laser passes through, a neighbor check is performed to dete
 To solve for different levels, simply change the filename to something else at:
 ```solution_generator(game, maxiter)```
 ### 4. File organization
-Codes were written in parts and assembled into a final file **nice_output.py**. 
+Codes were written in parts and assembled into a final file **lazor_solver.py**. 
 ### Authors:
 Ameya Harmalkar https://github.com/AmeyaHarmalkar<br/>
 Haonan Xu https://github.com/haonan-xu<br/>
