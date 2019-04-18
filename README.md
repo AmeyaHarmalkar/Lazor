@@ -23,7 +23,7 @@ Axes defining block, laser and intercept positioning are as followed:<br/>
 \|/ +y<br/>
 
   ##### 2. Solver
-In each iteration, random blocks are chosen and placed in random positions on the board. If the laser hits the edge of a block, depending on the block type and position relative of the laser trajectory, laser is reflected, transmitted, both, or stopped. A maximum number of iterations is provided to prevent indefinite calculations in case a solution takes too long or could not be found.
+In each iteration, random positions on the board are chosen for block placement. Refract blocks are then selected first to randomly populate these positions, then reflect and finally opaque blocks. Because refract blocks split the laser path and there are typically fewer of them than reflect blocks, this serves to maximize the number of laser paths in fewer iterations and thus increasing the probability of getting the right solution. If the laser hits the edge of a block, depending on the block type and position relative to the laser trajectory, laser is reflected, transmitted, both, or stopped. A maximum number of iterations is provided to prevent indefinite calculations in case a solution takes too long or could not be found.
   ##### 3. Output
 The solution is written in grid form (similar to input) in **solution.bff**.
 ### 3. Codes
@@ -42,7 +42,7 @@ To solve for different levels, simply change the filename to something else at:
 ### 4. File organization
 Codes were written in parts and assembled into a final file **nice_output.py**. 
 ### Authors:
-Henry Herbol https://github.com/hherbol<br/>
 Ameya Harmalkar https://github.com/AmeyaHarmalkar<br/>
 Haonan Xu https://github.com/haonan-xu<br/>
 Avery Tran https://github.com/AveryTran<br/>
+Henry Herbol https://github.com/hherbol<br/>
