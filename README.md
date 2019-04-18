@@ -38,7 +38,7 @@ At each position the laser passes through, a neighbor check is performed to dete
 * MyTest: unit test codes for various functions and components to ensure code functionality and facilitate debugging.
 
 To solve for different levels, simply change the filename to something else at:
-```G = Game('mad_1.bff')```
+```solution_generator(game, maxiter)```
 ### 4. File organization
 Codes were written in parts and assembled into a final file **nice_output.py**. 
 ### Authors:
