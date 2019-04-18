@@ -17,10 +17,9 @@ approach to solve the game, and output a solution file in a similar format to th
 
 	Axes defining block, laser and intercept positioning are as followed:
  	__________\ +x
-	 |         / 
+	 |        / 
 	 |
-	 |
-	\|/ +y
+	 |/ +y
 	
 *Solver*
 	In each iteration, random positions on the board are chosen for block placement. 
@@ -222,6 +221,16 @@ class Board:
 		'''
 		The sampler function generates a list of tuples of coordinates for allowed block positions
 
+		**Parammeters**
+
+			grid: *list, list, str*
+				A nested list of strings containing the description of the game board
+
+		**Returns**
+
+			sample_space: *list, tuple* 
+				A list of tuples indicating the coordinates through which the blocks can be placed. 
+
 		'''
 
 		sample_space = []
@@ -239,6 +248,21 @@ class Board:
 		The sample_board function generates a single permutation of how a set of 
 		given blocks can be arranged on the game grid.
 
+		**Parammeters**
+
+			sample_space: *list, tuple* 
+				A list of tuples indicating the coordinates through which the blocks can be placed. 
+
+			blocks: * dictionary * 
+				A dictionary of available block type and respective numbers
+
+			grid: *list, list, str*
+				A nested list of strings containing the description of the game board
+
+		**Returns**
+
+			grid: *list, list, str*
+				A nested list of strings containing the description of the game permutation (with game blocks)
 		'''
 
 		options = random.sample(sample_space, sum(blocks.values()))
@@ -257,16 +281,16 @@ class Board:
 
 			if nC != 0 :
 				grid[j][i] = 'C'
-				nC = nC-1
+				nC = nC - 1
 			
 			else:
 				if nA != 0 :
 					grid[j][i] = 'A'
-					nA = nA-1
+					nA = nA - 1
 				else :
 					if nB != 0:
 						grid[j][i] = 'B'
-						nB = nB-1
+						nB = nB - 1
 					else:
 						print("Error: No block given")
 		return grid
@@ -278,26 +302,40 @@ class Board:
 		It converts the sample_board of dimension (i*j) to a board of dimensions (2i+1)*(2j+1). 
 		This is important as the lazor passes through the midpoints, where the targets are placed. 
 
+		**Parammeters**
+
+			grid: *list, list, str*
+				A nested list of strings containing the description of the game board
+
+		**Returns**
+
+			meshgrid: *list, list, str*
+				A nested list of strings containing the description of the meshgrid of game board
+
+
 		'''
 
 		meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
 
 		for i in range(len(grid)):
 			for j in range(len(grid[0])):
-				meshgrid[2*i+1][2*j+1] = grid[i][j]
+				meshgrid[2 * i + 1][2 * j + 1] = grid[i][j]
 
 		return meshgrid
 
 
 class Blocks:
+
 	'''
 	This class defines the 'reflect' and 'transmit' properties for each position in the game board.
 	'''
+
 	def __init__(self,x,y):
 		self.x = x
 		self.y = y
 
 	def prop(self, meshgrid):
+
 		'''
 		This function specifies the 'reflect' and 'transmit' properties as booleans
 		**Parameter**
@@ -390,7 +428,7 @@ class Laser:
 				ex = nx + n_direct[i][0]
 				ey = ny + n_direct[i][1]
 
-				if ex > 0 and ex < 2*len(grid[0])+1 and ey > 0 and ey < 2*len(grid)+1:
+				if ex > 0 and ex < 2 * len(grid[0])+1 and ey > 0 and ey < 2 * len(grid)+1:
 					#Just to perform a check that we are still within the grid
 					delta_x = ex-nx
 					delta_y = ey-ny
@@ -471,10 +509,6 @@ class Laser:
 
 	def trajectory(self, path, grid, meshgrid):
 
-		#meshgrid = [['o' for i in range(2*len(grid[0])+1)] for j in range(2*len(grid)+1)]
-
-		#print(meshgrid)
-
 
 		intercepts = []
 		path = []
@@ -483,14 +517,11 @@ class Laser:
 			intercepts.append([self.source[i]])
 			path.append([self.direction[i]])
 
-
-		#intercepts = [tuple(self.source[0])]
-
 		n_direct = [(0, 1),(0, -1),(-1, 0),(1, 0)]
 
 		path_1 = []
 		intercept_new = []
-		#print(len(path_1))
+
 		
 		for k in range(len(path)) :
 
@@ -535,12 +566,14 @@ class Laser:
 
 				intercept_new.append((nx,ny))
 				
-				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
+				while intercept_new[-1][0] != 0 and intercept_new[-1][0] < len(meshgrid[0])-1 and intercept_new[
+				-1][1] != 0 and intercept_new[-1][1] < len(meshgrid)-1:
 					
 
 					if path_1[-1] != (0,0) :
 
-						path_1, intercept_new, path_0, intercept_0 = self.laser_strikes(path_1, intercept_new, grid, meshgrid, path_0, intercept_0)
+						path_1, intercept_new, path_0, intercept_0 = self.laser_strikes(
+							path_1, intercept_new, grid, meshgrid, path_0, intercept_0)
 
 					else:
 						break
@@ -576,13 +609,15 @@ class MyTest(unittest.TestCase):
 		G3 = Game('yarn_5.bff')
 		G3.database()
 		self.assertEqual(G3.lazor_start, [(4, 1)])
-		self.assertEqual(G3.grid, [['o', 'B', 'x', 'o', 'o'], ['o', 'o', 'o', 'o', 'o'], ['o', 'x', 'o', 'o', 'o'], ['o', 'x', 'o', 'o', 'x'], ['o', 'o', 'x', 'x', 'o'], ['B', 'o', 'x', 'o', 'o']])
+		self.assertEqual(G3.grid, [['o', 'B', 'x', 'o', 'o'], ['o', 'o', 'o', 'o', 'o'], [
+			'o', 'x', 'o', 'o', 'o'], ['o', 'x', 'o', 'o', 'x'], ['o', 'o', 'x', 'x', 'o'], ['B', 'o', 'x', 'o', 'o']])
 
 	def test_sampler(self):
 		G = Game('mad_4.bff')
 		G.database()
 		B = Board(G.grid,G.lazor_start, G.lazor_path,G.pointer)
-		self.assertEqual(B.sampler(G.grid), [(0, 0), (1, 0), (2, 0), (3, 0), (0, 1), (1, 1), (2, 1), (3, 1), (0, 2), (1, 2), (2, 2), (3, 2), (0, 3), (1, 3), (2, 3), (3, 3), (0, 4), (1, 4), (2, 4), (3, 4)])
+		self.assertEqual(B.sampler(G.grid), [(0, 0), (1, 0), (2, 0), (3, 0), (0, 1), (1, 1), (2, 1),
+		 (3, 1), (0, 2), (1, 2), (2, 2), (3, 2), (0, 3), (1, 3), (2, 3), (3, 3), (0, 4), (1, 4), (2, 4), (3, 4)])
 
 	def test_blocks_1(self):
 		G = Game('tiny_5.bff')
@@ -633,6 +668,8 @@ class MyTest(unittest.TestCase):
 
 def outputter(mesh):
 
+	# The outputter() function lines output the solution into "solution.bff" file
+
 	print("Analyzing and preparing files for output...")
 
 	solution = []
@@ -658,6 +695,9 @@ def outputter(mesh):
 
 
 def solution_generator(game, maxiter):
+
+	# The solution_generator() is the driver function that wraps everything needed to solve the 
+	# given lazer game 
 
 	for i in range(maxiter):
 		G = Game(game)
@@ -692,7 +732,7 @@ if __name__ == '__main__':
 
 	
 
-	solution_generator('tiny_5.bff', 500000)
+	solution_generator('mad_6.bff', 500000)
 	
 
 
